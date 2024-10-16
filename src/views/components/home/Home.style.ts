@@ -1,0 +1,11 @@
+import { StyleSheet } from "react-native";
+import { layout } from "../../common";
+
+/* Home styles */
+
+const styles = StyleSheet.create({
+  layout: layout.style,
+});
+
+/* Exports */
+export { styles };

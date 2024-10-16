@@ -1,0 +1,19 @@
+{
+  "preset": "react-native",
+  "moduleNameMapper": {
+    "^@components(.*)$": "<rootDir>/src/components$1",
+    "^@helpers(.*)$": "<rootDir>/src/helpers$1",
+    "^@router(.*)$": "<rootDir>/src/router$1",
+    "^@theme(.*)$": "<rootDir>/src/theme$1",
+    "^@views(.*)$": "<rootDir>/src/views$1"
+  },
+  "collectCoverage": true,
+  "collectCoverageFrom": ["src/**/*.{ts,tsx}"],
+  "coveragePathIgnorePatterns": [
+    "index.ts",
+    "/models/",
+    "/router/",
+    "\\.style\\.ts"
+  ],
+  "coverageDirectory": "reports"
+}

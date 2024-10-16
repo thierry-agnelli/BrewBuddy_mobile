@@ -1,79 +1,118 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
-
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Check your configuration.
 
-## Step 1: Start the Metro Server
+Open terminal, navigate to your app folder and run command :
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+`npx react-native doctor`
 
-To start Metro, run the following command from the _root_ of your React Native project:
+### Android
 
-```bash
-# using npm
-npm start
+#### Java version
 
-# OR using Yarn
-yarn start
+```
+✖ JDK - Required to compile Java code
+   - Version found: N/A
+   - Version supported: >= 17 <= 20
 ```
 
-## Step 2: Start your Application
+(Or version found not >= 17 <= 20)
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Install **java 17** on your system ([download page](https://www.oracle.com/fr/java/technologies/downloads/#java17))
 
-### For Android
+#### Android Studio
 
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```
+ ✖ Android Studio - Required for building and installing your app on Android
 ```
 
-### For iOS
+Install **Android Studio** ([Install guide](https://developer.android.com/studio/install?hl=fr)).
 
-```bash
-# using npm
-npm run ios
+Add Android Studio **installation path** to your **PATH** variable.
 
-# OR using Yarn
-yarn ios
+#### ANDROID_HOME
+
+```
+ ✖ ANDROID_HOME - Environment variable that points to your Android SDK installation
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+#### Congratulations
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+Now you can run your code either on Android Studio or Vs Codei
 
-## Step 3: Modifying your App
+## Running application.
 
-Now that you have successfully run the app, let's modify it.
+### Android
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+##### _Linux system only_
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+Install android-tools on your system.
 
-## Congratulations! :tada:
+_You may have for some device to install specific drivers._
 
-You've successfully run and modified your React Native App. :partying_face:
+#### Physical device
 
-### Now what?
+To configure yout device :
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+<ul>
+    <li>Active developper mode on your phone.</li>
+    <li>Plug your phone with USB.</li>
+    <li>Select "File transfert".</li>
+    <li>Accept debugging mode (first time).</li>
+</ul>
 
-# Troubleshooting
+To run metro, run this command in terminal :
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+```
+npm run dev
+```
 
-# Learn More
+Then when os choice is prompted, type "a" for android, or run in another terminal this command:
 
-To learn more about React Native, take a look at the following resources:
+```
+npm run dev:android
+```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Wait for app building (first time can be longer).
+
+## Troubles Shooting.
+
+#### FAILURE: Build failed with an exception.
+
+_Gradle build daemon disappeared unexpectedly (it may have been killed or may have crashed)_
+
+Try to type commande from project root folder:
+
+```
+cd android && ./gradlew clean
+```
+
+You can also try to delete _node_modules_ folder and reinstall dependencies.
+
+#### Prettier plugin does'nt work on VS Code.
+
+<ul>
+    <li>Go to VS Code settings ("<i>ctrl+,</i>").</li>
+    <li>Type "Prettier" in search bar.</li>
+    <li>Search "Prettier: <b>Config Path</b>" option. </li>
+    <li>Type this path "./configs/.prettierrc.json".</li>
+</ul>
+
+#### ESLint plugin does'nt work on VS Code.
+
+<ul>
+    <li>Create a <b>.eslintrc.js</b> file at project root with this content:</li>
+</ul>
+
+```
+    module.exports = {
+    root: true,
+    extends: ["./configs/.eslintrc.js"],
+    };
+```
+
+<ul>
+    <li>Restart Eslint server :</li>   
+    Press "<i>ctrl+shift+P</i>" and search "ESLint: Restart ESLint server".
+</ul>
+
