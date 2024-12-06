@@ -42,9 +42,20 @@ Now you can run your code either on Android Studio or Vs Codei
 
 ## Running application.
 
+### env vars
+
+Navigate to ./src/config/env/
+Create this file :
+
+```
+env.ts
+```
+
+Copy into it content of env.examples.ts and update vars.
+
 ### Android
 
-##### _Linux system only_
+##### **Linux system only**
 
 Install android-tools on your system.
 
@@ -115,4 +126,3 @@ You can also try to delete _node_modules_ folder and reinstall dependencies.
     <li>Restart Eslint server :</li>   
     Press "<i>ctrl+shift+P</i>" and search "ESLint: Restart ESLint server".
 </ul>
-

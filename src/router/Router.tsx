@@ -1,10 +1,13 @@
 import { ComponentType } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import { DrawerScreenViewProps } from "./models/DrawerScreenViewProps";
-import { About, Home } from "@views";
-import { DrawerContent } from "./component";
+import { DrawerScreenViewProps, Routes } from "@models";
+import { About, Home, Login, Register } from "@views";
 import { Header, ViewWrapper } from "@components";
+import { DrawerContent } from "./component";
+
+import { useAppContext } from "@hooks";
+
 import { theme } from "@theme";
 
 /**
@@ -13,30 +16,44 @@ import { theme } from "@theme";
  * @returns {JSX.?Element} : The Router.
  */
 function Router() {
+  // const { initialRoutes } = props;
+
   const Drawer = createDrawerNavigator();
 
-  const routesList: {
+  /* Context */
+  const { authToken } = useAppContext();
+
+  const authRoutesList: {
     name: string;
     view: ComponentType<DrawerScreenViewProps>;
   }[] = [
-    { name: "Home", view: Home },
-    { name: "About", view: About },
+    { name: Routes.HOME, view: Home },
+    { name: Routes.ABOUT, view: About },
+  ];
+
+  const appRoutesList: {
+    name: string;
+    view: ComponentType<DrawerScreenViewProps>;
+  }[] = [
+    { name: Routes.LOGIN, view: Login },
+    { name: Routes.REGISTER, view: Register },
   ];
 
   /* Render */
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
-      // Must delare Drawer component here to get navigator props.
+      initialRouteName={Routes.LOGIN}
+      // Must declare Drawer component here to get navigator props.
       // eslint-disable-next-line react/no-unstable-nested-components
-      drawerContent={(props) => (
+      drawerContent={(drawerProps) => (
         <DrawerContent
-          {...props}
-          routes={routesList.map((route) => route.name)}
+          {...drawerProps}
+          routes={[...authRoutesList.map((route) => route.name)]}
         />
       )}
+      screenOptions={{ swipeEnabled: !!authToken }}
     >
-      {routesList.map((route, index) => (
+      {authRoutesList.map((route, index) => (
         <Drawer.Screen
           key={route.name + index}
           name={route.name}
@@ -49,6 +66,13 @@ function Router() {
             headerTitle: "BrewBuddy",
             headerRight: Header,
           }}
+        />
+      ))}
+      {appRoutesList.map((route, index) => (
+        <Drawer.Screen
+          key={route.name + index}
+          name={route.name}
+          component={screenFactory(route.view)}
         />
       ))}
     </Drawer.Navigator>

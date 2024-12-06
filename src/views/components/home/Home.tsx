@@ -1,7 +1,7 @@
-import { Text, View, Button } from "react-native";
-import { DrawerScreenViewProps } from "@router";
-
-import { styles } from "./Home.style";
+import { View, Button } from "react-native";
+import { DrawerScreenViewProps, Routes } from "@models";
+import { Text } from "@components";
+import { premadeClasses } from "@helpers";
 
 /**
  * Home View.
@@ -15,7 +15,7 @@ function Home(props: DrawerScreenViewProps) {
 
   /* Render */
   return (
-    <View style={styles.layout}>
+    <View style={premadeClasses.layout}>
       <Text>Votre compagnon de brassage !!</Text>
       <Button title="About" onPress={onPressHandler} testID="navigate-button" />
     </View>
@@ -27,7 +27,7 @@ function Home(props: DrawerScreenViewProps) {
    * Button pressed handler.
    */
   function onPressHandler() {
-    navigation.navigate("About");
+    navigation.navigate(Routes.ABOUT);
   }
 }
 

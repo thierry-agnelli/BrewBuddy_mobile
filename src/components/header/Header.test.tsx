@@ -7,14 +7,14 @@ import { Header } from "./Header";
  *  Header Component test.
  */
 
-describe("ViewWrapper component tests", () => {
+describe("ViewWrapper component test", () => {
   // Should be defined
-  it("Shoukld be defined", () => {
+  it("Should be defined", () => {
     expect(Header).toBeDefined();
   });
 
-  // Component tests
-  describe("Component tests", () => {
+  // Component test
+  describe("Tests", () => {
     it("Should render", () => {
       const { getByText } = render(<Header />);
 

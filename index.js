@@ -1,4 +1,4 @@
-import "./src/setup/gesture-handler";
+import "./src/configs/gesture-handler/gesture-handler";
 import { AppRegistry } from "react-native";
 
 import App from "./src/App";

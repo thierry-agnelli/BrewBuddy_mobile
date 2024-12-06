@@ -1,7 +1,6 @@
-import { SafeAreaView, StatusBar, View } from "react-native";
+import { SafeAreaView, StatusBar } from "react-native";
 import type { PropsWithChildren } from "react";
-import { styles } from "./ViewWrapper.style";
-
+import { theme } from "@theme";
 /**
  * Wrap view in commons base elements.
  *
@@ -15,8 +14,12 @@ function ViewWrapper(props: PropsWithChildren) {
   /* Render */
   return (
     <SafeAreaView>
-      <StatusBar />
-      <View style={styles.ViewContainer}>{children}</View>
+      <StatusBar
+        translucent
+        backgroundColor={theme.color.primary}
+        barStyle="dark-content"
+      />
+      {children}
     </SafeAreaView>
   );
 }

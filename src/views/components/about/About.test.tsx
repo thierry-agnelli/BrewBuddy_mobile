@@ -1,21 +1,20 @@
 import { describe, expect, it } from "@jest/globals";
 import { render, fireEvent } from "@testing-library/react-native";
 
-import { mockedNavigation } from "@helpers";
-import { About } from "./About";
+import { mockedNavigation } from "@tests";
+import { About } from "@views";
 
 /**
  *  About view test.
  */
 
-describe("About view tests", () => {
+describe("About view test", () => {
   // Should be defined
   it("Should be defined", () => {
     expect(About).toBeDefined();
   });
 
-  // View tests
-  describe("View tests", () => {
+  describe("Tests", () => {
     it("Should render", () => {
       const { getByText } = render(<About navigation={mockedNavigation} />);
 

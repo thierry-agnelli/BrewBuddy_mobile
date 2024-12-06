@@ -9,10 +9,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "jest",
-    "test:reports": "npm run test -- --coverage",
+    "test:reports": "npm run test --coverage",
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/native": "^6.1.18",
     "react": "18.3.1",

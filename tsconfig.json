@@ -3,11 +3,18 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@assets": ["src/assets"],
       "@components": ["src/components"],
+      "@configs": ["src/configs"],
       "@helpers": ["src/helpers"],
+      "@models": ["src/models"],
       "@router": ["src/router"],
+      "@services": ["src/services"],
+      "@tests": ["src/tests"],
       "@theme": ["src/theme"],
-      "@views": ["src/views"]
+      "@views": ["src/views"],
+      "@utils": ["src/utils"],
+      "@hooks": ["src/hooks"]
     }
   }
 }

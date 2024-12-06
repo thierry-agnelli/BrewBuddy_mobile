@@ -20,14 +20,13 @@ jest.mock("@router/Router.tsx", () => {
  *  App component test.
  */
 
-describe("App test", () => {
+describe("App component test", () => {
   // Should be defined
   it("Should be defined", () => {
     expect(App).toBeDefined();
   });
 
-  // Component tests
-  describe("Component tests", () => {
+  describe("Tests", () => {
     it("Renders correctly", () => {
       render(<App />);
     });

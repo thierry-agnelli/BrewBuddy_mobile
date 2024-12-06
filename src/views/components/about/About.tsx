@@ -1,6 +1,7 @@
-import { Button, Text, View } from "react-native";
-import { styles } from "./About.style";
-import { DrawerScreenViewProps } from "@router";
+import { Button, View } from "react-native";
+import { DrawerScreenViewProps } from "@models";
+import { Text } from "@components";
+import { premadeClasses } from "@helpers";
 
 /**
  * About View.
@@ -14,7 +15,7 @@ function About(props: DrawerScreenViewProps) {
 
   /* Render */
   return (
-    <View style={styles.layout}>
+    <View style={premadeClasses.layout}>
       <Text>A propos.</Text>
       <Button title="Back" onPress={onPressHandler} testID="back-button" />
     </View>
@@ -25,7 +26,7 @@ function About(props: DrawerScreenViewProps) {
   /**
    * Button pressed handler.
    */
-  function onPressHandler() {
+  async function onPressHandler() {
     navigation.goBack();
   }
 }

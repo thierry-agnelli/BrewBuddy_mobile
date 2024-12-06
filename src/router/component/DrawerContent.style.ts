@@ -1,24 +1,47 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet } from "react-native";
 import { theme } from "@theme";
-
-const screenHeight = Dimensions.get("window").height;
 
 /**
  *  DrawerContent styles
  */
 const styles = StyleSheet.create({
-  header: {
-    height: screenHeight / 10,
+  drawer: {
     display: "flex",
-    justifyContent: "center",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    marginRight: "5%",
+    marginLeft: "5%",
+    height: "100%",
+  },
+  header: {
+    flex: 6,
+    paddingBottom: "3%",
+    paddingRight: "5%",
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    borderBottomWidth: 1,
+    borderBottomColor: theme.color.primary,
+  },
+  headerTitle: {
+    fontSize: 25,
+    fontWeight: "bold",
   },
   routes: {
-    minHeight: (3 * screenHeight) / 10,
+    flex: 87,
+    overflow: "scroll",
   },
   footer: {
-    height: screenHeight / 10,
-    borderTopWidth: 2,
+    flex: 7,
+    paddingRight: "5%",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    borderTopWidth: 1,
     borderTopColor: theme.color.primary,
+  },
+  closeDrawerIcon: {
+    height: "20%",
+    width: "15%",
+    tintColor: theme.color.primary,
   },
 });
 

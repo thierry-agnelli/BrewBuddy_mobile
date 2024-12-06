@@ -4,9 +4,6 @@ import { theme } from "@theme";
 /* Header style */
 
 const styles = StyleSheet.create({
-  test: {
-    width: "25%",
-  },
   logo: {
     color: theme.color.primary,
   },

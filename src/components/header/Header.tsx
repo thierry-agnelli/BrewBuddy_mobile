@@ -1,5 +1,6 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { styles } from "./Header.style";
+import { Text } from "../text/Text";
 
 /**
  * Header component.
@@ -9,7 +10,7 @@ import { styles } from "./Header.style";
 function Header() {
   /* Render */
   return (
-    <View style={styles.test}>
+    <View>
       <Text style={styles.logo}>Logo</Text>
     </View>
   );

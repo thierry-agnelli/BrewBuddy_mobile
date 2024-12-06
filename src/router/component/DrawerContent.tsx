@@ -1,9 +1,13 @@
-import { View, Text } from "react-native";
+import { View, Image, Pressable } from "react-native";
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
 } from "@react-navigation/drawer";
+import { Text } from "@components";
+import { useAppContext } from "@hooks";
+import { storage } from "@utils";
+import { leftArrow } from "@assets";
 
 import { styles } from "./DrawerContent.style";
 
@@ -18,11 +22,13 @@ type DrawerContentProps = DrawerContentComponentProps & {
 function DrawerContent(props: DrawerContentProps) {
   const { navigation, routes } = props;
 
+  const { setAuthToken } = useAppContext();
+
   /* Render */
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props} contentContainerStyle={styles.drawer}>
       <View style={styles.header}>
-        <Text>BB Menu</Text>
+        <Text style={styles.headerTitle}>BrewBuddy</Text>
       </View>
       <View style={styles.routes}>
         {routes.map((route) => (
@@ -33,11 +39,25 @@ function DrawerContent(props: DrawerContentProps) {
           />
         ))}
       </View>
-      <View style={styles.footer}>
-        <DrawerItem label="Fermer" onPress={() => navigation.closeDrawer()} />
-      </View>
+
+      <Pressable style={styles.footer} onPress={onDisconnectPressHandler}>
+        <Image source={leftArrow} style={styles.closeDrawerIcon} />
+      </Pressable>
     </DrawerContentScrollView>
   );
+
+  /**
+   * Handler
+   */
+
+  /**
+   * Disconnect handler
+   */
+  function onDisconnectPressHandler() {
+    storage.removeItem("authToken");
+    setAuthToken(null);
+    navigation.navigate("Login");
+  }
 }
 
 /* Export */
