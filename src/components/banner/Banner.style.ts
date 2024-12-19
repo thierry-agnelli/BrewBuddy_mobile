@@ -1,14 +1,15 @@
 import { StyleSheet } from "react-native";
-// import { theme } from "@theme";
+
 import { aspectRatio } from "@utils";
 
-/* Header style */
+/*  Banner styles */
 
 const styles = StyleSheet.create({
-  title: {
-    marginRight: aspectRatio("width", 5),
+  layout: {
+    height: aspectRatio("height", 15),
+    width: aspectRatio("width", 100),
   },
 });
 
-/* Exports */
+/* Export */
 export { styles };

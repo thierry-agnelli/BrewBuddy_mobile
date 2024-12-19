@@ -26,19 +26,23 @@ describe("Register view test", () => {
       expect(getByTestId("register-title")).toBeDefined();
     });
 
-    it("Should navigate to login view", () => {
+    it("Should navigate to login view", async () => {
       const { getByTestId } = render(
         <Register navigation={mockedNavigation} />,
       );
 
       const button = getByTestId("login-button");
 
-      fireEvent.press(button);
+      await act(() => {
+        fireEvent.press(button);
+      });
 
-      expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.LOGIN);
+      await waitFor(() => {
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.LOGIN);
+      });
     });
 
-    it("Should handle change fields value", () => {
+    it("Should handle change fields value", async () => {
       const mockFormRef = {};
       const useRefSpy = jest.spyOn(React, "useRef");
       // TODO : Find a better way.
@@ -56,10 +60,14 @@ describe("Register view test", () => {
 
       const formInputs = getAllByTestId("form-input");
 
-      fireEvent.changeText(formInputs[0], "test");
+      await act(() => {
+        fireEvent.changeText(formInputs[0], "test");
+      });
 
-      expect(mockFormRef).toStrictEqual({
-        username: "test",
+      await waitFor(() => {
+        expect(mockFormRef).toStrictEqual({
+          username: "test",
+        });
       });
     });
 
@@ -84,13 +92,15 @@ describe("Register view test", () => {
       const cguCheckbox = getByTestId("cgu-checkbox");
       const button = getByTestId("register-button");
 
-      act(() => {
+      await act(() => {
         fireEvent.changeText(usernameInput, "Username");
         fireEvent.changeText(mailInput, "test@mail.mock");
         fireEvent.changeText(pwdInput, "1-Azerty");
         fireEvent.changeText(confirmPwdInput, "1-Azerty");
         fireEvent.press(cguCheckbox);
+      });
 
+      await act(() => {
         fireEvent.press(button);
       });
 
@@ -101,7 +111,7 @@ describe("Register view test", () => {
       );
     });
 
-    it("Should display error style", () => {
+    it("Should display error style", async () => {
       const { getByTestId, getAllByTestId } = render(
         <Register navigation={mockedNavigation} />,
       );
@@ -109,24 +119,26 @@ describe("Register view test", () => {
       const required = getAllByTestId("input-required");
       const inputs = getAllByTestId("form-input");
 
-      act(() => {
+      await act(() => {
         fireEvent.press(button);
       });
 
-      for (const requireElement of required) {
-        expect(requireElement.props.style.color).toBe("#E74C3C");
-      }
+      await waitFor(() => {
+        for (const requireElement of required) {
+          expect(requireElement.props.style.color).toBe("#E74C3C");
+        }
 
-      for (const input of inputs) {
-        expect(
-          input.props.style.find(
-            // Need to use any to asser backGroundColor
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (style: StyleProps<any>) =>
-              style.borderColor && !style.backgroundColor,
-          ).borderColor,
-        ).toBe("#E74C3C");
-      }
+        for (const input of inputs) {
+          expect(
+            input.props.style.find(
+              // Need to use any to asser backGroundColor
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (style: StyleProps<any>) =>
+                style.borderColor && !style.backgroundColor,
+            ).borderColor,
+          ).toBe("#E74C3C");
+        }
+      });
     });
 
     it("Should register", async () => {
@@ -170,7 +182,10 @@ describe("Register view test", () => {
       const successfulLRegistrationBtn = getByTestId(
         "successful-registration-btn",
       );
-      expect(successfulLRegistrationBtn).toBeDefined();
+
+      await waitFor(() => {
+        expect(successfulLRegistrationBtn).toBeDefined();
+      });
 
       // Navigate to login view.
       await act(() => {

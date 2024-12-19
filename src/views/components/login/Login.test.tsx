@@ -27,14 +27,18 @@ describe("Login view test", () => {
       expect(getByTestId("login-title")).toBeDefined();
     });
 
-    it("Should navigate to register view", () => {
+    it("Should navigate to register view", async () => {
       const { getByTestId } = render(<Login navigation={mockedNavigation} />);
 
       const button = getByTestId("register-button");
 
-      fireEvent.press(button);
+      await act(() => {
+        fireEvent.press(button);
+      });
 
-      expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.REGISTER);
+      await waitFor(() => {
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.REGISTER);
+      });
     });
 
     // it("Should handle change fields value", () => {
@@ -75,10 +79,12 @@ describe("Login view test", () => {
       const pwdInput = getByPlaceholderText("Mot de passe");
       const button = getByTestId("login-button");
 
-      act(() => {
+      await act(() => {
         fireEvent.changeText(mailInput, "test@mail.mock");
         fireEvent.changeText(pwdInput, "password");
+      });
 
+      await act(() => {
         fireEvent.press(button);
       });
 
@@ -89,7 +95,7 @@ describe("Login view test", () => {
       );
     });
 
-    it("Should display error style", () => {
+    it("Should display error style", async () => {
       const { getByTestId, getAllByTestId } = render(
         <Login navigation={mockedNavigation} />,
       );
@@ -97,24 +103,26 @@ describe("Login view test", () => {
       const required = getAllByTestId("input-required");
       const inputs = getAllByTestId("form-input");
 
-      act(() => {
+      await act(() => {
         fireEvent.press(button);
       });
 
-      for (const requireElement of required) {
-        expect(requireElement.props.style.color).toBe("#E74C3C");
-      }
+      await waitFor(() => {
+        for (const requireElement of required) {
+          expect(requireElement.props.style.color).toBe("#E74C3C");
+        }
 
-      for (const input of inputs) {
-        expect(
-          input.props.style.find(
-            // Need to use any to asser backGroundColor
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (style: StyleProps<any>) =>
-              style.borderColor && !style.backgroundColor,
-          ).borderColor,
-        ).toBe("#E74C3C");
-      }
+        for (const input of inputs) {
+          expect(
+            input.props.style.find(
+              // Need to use any to asser backGroundColor
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (style: StyleProps<any>) =>
+                style.borderColor && !style.backgroundColor,
+            ).borderColor,
+          ).toBe("#E74C3C");
+        }
+      });
     });
 
     it("Should login", async () => {
@@ -135,7 +143,7 @@ describe("Login view test", () => {
       mockedAuthenticateService.mockResolvedValueOnce("authToken");
 
       // Fill form
-      act(() => {
+      await act(() => {
         fireEvent.changeText(mailInput, "test@mail.mock");
         fireEvent.changeText(pwdInput, "password");
       });
@@ -151,9 +159,11 @@ describe("Login view test", () => {
         expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME);
       });
 
-      act(() => {
+      await act(() => {
         fireEvent.press(rememberMe);
+      });
 
+      await act(() => {
         fireEvent.press(button);
       });
 
@@ -162,14 +172,12 @@ describe("Login view test", () => {
       });
     });
 
-    it("Should redirect to home if auth token exist in storage", async () => {
+    it("Should redirect to home if auth token exist in storage", () => {
       mockedGetItem.mockResolvedValueOnce("authToken");
 
       render(<Login navigation={mockedNavigation} />);
 
-      await waitFor(() =>
-        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME),
-      );
+      expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME);
     });
   });
 });

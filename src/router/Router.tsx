@@ -2,7 +2,7 @@ import { ComponentType } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { DrawerScreenViewProps, Routes } from "@models";
-import { About, Home, Login, Register } from "@views";
+import { Home, Lexicon, Login, Register } from "@views";
 import { Header, ViewWrapper } from "@components";
 import { DrawerContent } from "./component";
 
@@ -28,7 +28,7 @@ function Router() {
     view: ComponentType<DrawerScreenViewProps>;
   }[] = [
     { name: Routes.HOME, view: Home },
-    { name: Routes.ABOUT, view: About },
+    { name: Routes.LEXICON, view: Lexicon },
   ];
 
   const appRoutesList: {
@@ -60,10 +60,10 @@ function Router() {
           component={screenFactory(route.view)}
           options={{
             headerStyle: {
-              backgroundColor: "",
+              backgroundColor: theme.color.background,
             },
-            headerTintColor: theme.color.primary,
-            headerTitle: "BrewBuddy",
+            headerTintColor: theme.color.dark,
+            headerTitle: "",
             headerRight: Header,
           }}
         />

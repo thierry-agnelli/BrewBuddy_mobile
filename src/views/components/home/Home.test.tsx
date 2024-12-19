@@ -3,9 +3,10 @@ import { render, fireEvent } from "@testing-library/react-native";
 
 import { mockedNavigation } from "@tests";
 import { Home } from "./Home";
+import { Routes } from "@models";
 
 /**
- *  About view test.
+ *  Home view test.
  */
 
 describe("Home view test", () => {
@@ -16,9 +17,11 @@ describe("Home view test", () => {
 
   describe("Tests", () => {
     it("Should render", () => {
-      const { getByText } = render(<Home navigation={mockedNavigation} />);
+      const { getByTestId } = render(<Home navigation={mockedNavigation} />);
 
-      expect(getByText("Votre compagnon de brassage !!")).toBeTruthy();
+      const content = getByTestId("home-view");
+
+      expect(content).toBeDefined();
     });
 
     it("Should call navigate navigation method", () => {
@@ -28,7 +31,7 @@ describe("Home view test", () => {
 
       fireEvent.press(button);
 
-      expect(mockedNavigation.navigate).toHaveBeenCalled();
+      expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.LEXICON);
     });
   });
 });

@@ -18,7 +18,7 @@ describe("ViewWrapper component test", () => {
     it("Should render", () => {
       const { getByText } = render(<Header />);
 
-      expect(getByText("Logo")).toBeTruthy();
+      expect(getByText("BrewBuddy")).toBeTruthy();
     });
   });
 });

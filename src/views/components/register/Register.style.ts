@@ -56,6 +56,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  successFulRegistrationBanner: {
+    position: "absolute",
+    top: 0,
+  },
   successfulRegistration: {
     height: "30%",
     width: "100%",

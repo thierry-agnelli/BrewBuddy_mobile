@@ -5,8 +5,8 @@
 enum Routes {
   LOGIN = "Login",
   REGISTER = "Register",
-  HOME = "Home",
-  ABOUT = "About",
+  HOME = "Accueil",
+  LEXICON = "Lexique",
 }
 
 /* Exports */

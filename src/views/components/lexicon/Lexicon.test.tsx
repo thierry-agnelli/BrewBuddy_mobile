@@ -2,27 +2,27 @@ import { describe, expect, it } from "@jest/globals";
 import { render, fireEvent } from "@testing-library/react-native";
 
 import { mockedNavigation } from "@tests";
-import { About } from "@views";
+import { Lexicon } from "@views";
 
 /**
- *  About view test.
+ *  Lexicon view test.
  */
 
 describe("About view test", () => {
   // Should be defined
   it("Should be defined", () => {
-    expect(About).toBeDefined();
+    expect(Lexicon).toBeDefined();
   });
 
   describe("Tests", () => {
     it("Should render", () => {
-      const { getByText } = render(<About navigation={mockedNavigation} />);
+      const { getByTestId } = render(<Lexicon navigation={mockedNavigation} />);
 
-      expect(getByText("A propos.")).toBeTruthy();
+      expect(getByTestId("lexicon-view")).toBeTruthy();
     });
 
     it("Should call goBack navigation method", () => {
-      const { getByTestId } = render(<About navigation={mockedNavigation} />);
+      const { getByTestId } = render(<Lexicon navigation={mockedNavigation} />);
 
       const button = getByTestId("back-button");
 

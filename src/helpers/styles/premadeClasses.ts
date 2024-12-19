@@ -18,12 +18,50 @@ const layout = StyleSheet.create({
   },
 });
 
-const banner = StyleSheet.create({
-  class: {
-    height: aspectRatio("height", 15),
-    width: aspectRatio("width", 100),
-    position: "absolute",
-    top: 0,
+const viewContent = StyleSheet.create({
+  layout: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  titleBox: {
+    flex: 15,
+    justifyContent: "center",
+  },
+  title: {
+    fontFamily: theme.font.family.title,
+    fontSize: theme.font.size.subTitle,
+    fontWeight: "900",
+  },
+  pictureBox: {
+    flex: 20,
+    width: aspectRatio("width", 75),
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "transparent",
+    overflow: "hidden",
+    alignItems: "center",
+  },
+  picture: {
+    height: aspectRatio("height", 16),
+    width: aspectRatio("width", 80),
+  },
+  textBox: {
+    flex: 50,
+    justifyContent: "flex-start",
+    paddingTop: aspectRatio("height", 5),
+  },
+  text: {
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  bottomPageButtonBox: {
+    flex: 15,
+    justifyContent: "flex-start",
+  },
+  bottomPageButton: {
+    width: aspectRatio("width", 40),
+    fontSize: theme.font.size.light,
   },
 });
 
@@ -51,10 +89,10 @@ const requiredError = StyleSheet.create({
 // Premade
 const premadeClasses = {
   layout: layout.class,
-  banner: banner.class,
   viewTitle: viewTitle.class,
   fieldError: fieldError.class,
   requiredError: requiredError.class,
+  viewContent,
 };
 
 /* Exports */

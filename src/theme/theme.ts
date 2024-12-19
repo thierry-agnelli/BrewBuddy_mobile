@@ -6,6 +6,7 @@ const theme = {
   color: {
     primary: "#F2A501",
     secondary: "#E5E5E5",
+    dark: "#000000",
     background: "#FEF7E8",
     backgroundSecondary: "#FFFFFF",
     disable: "#CCCCCC",
@@ -18,7 +19,9 @@ const theme = {
   font: {
     size: {
       title: aspectRatio("height", 4),
+      subTitle: aspectRatio("height", 3),
       information: aspectRatio("height", 1.5),
+      light: aspectRatio("height", 0.5),
     },
     family: {
       title: "Roboto",

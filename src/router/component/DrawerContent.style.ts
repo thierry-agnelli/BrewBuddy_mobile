@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     paddingBottom: "3%",
     paddingRight: "5%",
     display: "flex",
-    alignItems: "flex-end",
+    alignItems: "flex-start",
     justifyContent: "flex-end",
     borderBottomWidth: 1,
     borderBottomColor: theme.color.primary,

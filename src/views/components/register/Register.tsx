@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import {
+  Banner,
   Button,
   CheckBox,
   CheckBoxProps,
@@ -19,9 +20,11 @@ import {
   Routes,
 } from "@models";
 import { fieldValidation } from "@utils";
-import { banner, circle } from "@assets";
+import { circle } from "@assets";
 
 import { styles } from "./Register.style";
+
+/* Models */
 
 /**
  * Succesful register.
@@ -269,11 +272,13 @@ function Register(props: DrawerScreenViewProps) {
 /* Sub-components*/
 function SuccessfulRegistration(props: SuccessfullRegisterType) {
   const { onPress } = props;
-  const { banner: bannerStyle, viewTitle } = premadeClasses;
+  const { viewTitle } = premadeClasses;
 
   return (
     <View style={styles.successfulRegistrationLayout}>
-      <Image source={banner} style={bannerStyle} />
+      <View style={styles.successFulRegistrationBanner}>
+        <Banner />
+      </View>
       <View style={styles.successfulRegistration}>
         <Text style={viewTitle}> Félicitation !</Text>
         <Text>Votre compte a bien été crée.</Text>
