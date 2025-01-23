@@ -1,6 +1,6 @@
 {
   "name": "brewbuddy_mobile",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "react-native start --reset-cache",
