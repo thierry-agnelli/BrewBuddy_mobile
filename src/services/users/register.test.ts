@@ -1,11 +1,8 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-import { register } from "./register.ts";
-import { Form } from "@models";
+import { register, RegisterUserData } from "@services";
+import { ServerError } from "@models";
 import { serverErrorHandler } from "@utils";
-
-/* Models */
-type ErrorResponse = { statusCode: number };
 
 /**
  *  Register service test.
@@ -25,12 +22,20 @@ describe("Register service test", () => {
     it("Should reject register", async () => {
       jest.spyOn(global, "fetch").mockResolvedValueOnce({
         ok: false,
-        json: jest.fn<() => Promise<ErrorResponse>>().mockResolvedValueOnce({
-          statusCode: 401,
-        }),
+        json: jest
+          .fn<() => Promise<Partial<ServerError>>>()
+          .mockResolvedValueOnce({
+            status: 401,
+          }),
       } as Partial<Response> as Response);
 
-      await expect(register({} as Form)).rejects.toBe(serverErrorHandler(401));
+      await expect(register({} as RegisterUserData)).rejects.toBe(
+        serverErrorHandler({
+          status: 401,
+          error: "Test-error",
+          message: "Test-message",
+        }),
+      );
     });
 
     it("Should allow authentication", async () => {
@@ -42,7 +47,7 @@ describe("Register service test", () => {
         text: jest.fn().mockImplementation(() => "Success"),
       } as Partial<Response> as Response);
 
-      const response = await register({} as Form);
+      const response = await register({} as RegisterUserData);
       expect(response).toBe("Success");
     });
   });

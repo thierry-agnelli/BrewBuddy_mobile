@@ -24,6 +24,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: theme.border.width,
     borderBottomColor: theme.color.separator,
   },
+  loginFormInput: {
+    flex: 8,
+    justifyContent: "space-evenly",
+  },
+  loginFormButton: {
+    flex: 2,
+    justifyContent: "flex-end",
+    marginBottom: aspectRatio("width", 2),
+  },
   loginFormBottom: {
     flexDirection: "row",
     justifyContent: "space-evenly",

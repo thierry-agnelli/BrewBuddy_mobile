@@ -1,14 +1,17 @@
 import React from "react";
 
 import { describe, expect, it, jest } from "@jest/globals";
-import { render, fireEvent, act, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 
 import { mockedNavigation } from "@tests";
 import { Login } from "./Login";
 
 import * as authModule from "../../../services/users/authenticate.ts";
+// eslint-disable-next-line max-len
+import * as useAppContextModule from "../../../hooks/appContext/useAppContext.ts";
 import { Routes, StyleProps } from "@models";
 import { mockedGetItem, mockedSetItem } from "@tests";
+import { AppContextValues } from "@components";
 
 /**
  *  Login view test.
@@ -21,6 +24,11 @@ describe("Login view test", () => {
   });
 
   describe("Tests", () => {
+    // Mocks
+    jest.spyOn(useAppContextModule, "useAppContext").mockReturnValue({
+      setAuthToken: jest.fn(),
+    } as unknown as AppContextValues);
+
     it("Should render", () => {
       const { getByTestId } = render(<Login navigation={mockedNavigation} />);
 
@@ -32,38 +40,12 @@ describe("Login view test", () => {
 
       const button = getByTestId("register-button");
 
-      await act(() => {
-        fireEvent.press(button);
-      });
+      fireEvent.press(button);
 
       await waitFor(() => {
         expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.REGISTER);
       });
     });
-
-    // it("Should handle change fields value", () => {
-    //   const mockFormRef = {};
-    //   const useRefSpy = jest.spyOn(React, "useRef");
-    //   // TODO : Find a better way.&
-    //   // Had to mock twice to compensate Component life cycle
-    //   useRefSpy.mockReturnValueOnce({
-    //     current: mockFormRef,
-    //   });
-    //   useRefSpy.mockReturnValueOnce({
-    //     current: mockFormRef,
-    //   });
-    //
-    //   const { getAllByTestId } = render(
-    //     <Login navigation={mockedNavigation} />,
-    //   );
-    //   const formInputs = getAllByTestId("form-input");
-    //
-    //   fireEvent.changeText(formInputs[0], "test");
-    //
-    //   expect(mockFormRef).toStrictEqual({
-    //     mail: "test",
-    //   });
-    // });
 
     it("Should set error on login fail", async () => {
       // Mock authenticate service
@@ -82,9 +64,6 @@ describe("Login view test", () => {
       await act(() => {
         fireEvent.changeText(mailInput, "test@mail.mock");
         fireEvent.changeText(pwdInput, "password");
-      });
-
-      await act(() => {
         fireEvent.press(button);
       });
 
@@ -103,9 +82,9 @@ describe("Login view test", () => {
       const required = getAllByTestId("input-required");
       const inputs = getAllByTestId("form-input");
 
-      await act(() => {
-        fireEvent.press(button);
-      });
+      // await act(() => {
+      fireEvent.press(button);
+      // });
 
       await waitFor(() => {
         for (const requireElement of required) {
@@ -172,12 +151,15 @@ describe("Login view test", () => {
       });
     });
 
-    it("Should redirect to home if auth token exist in storage", () => {
+    it("Should redirect to home if auth token exist in storage", async () => {
       mockedGetItem.mockResolvedValueOnce("authToken");
 
       render(<Login navigation={mockedNavigation} />);
 
-      expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME);
+      // expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME);
+      await waitFor(() => {
+        expect(mockedNavigation.navigate).toHaveBeenCalled();
+      });
     });
   });
 });

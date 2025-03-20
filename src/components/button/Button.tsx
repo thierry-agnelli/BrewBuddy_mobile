@@ -35,7 +35,7 @@ function Button(props: ButtonProps) {
     title,
     icon,
     style,
-    testID = "pressable-button",
+    testID = "button",
     onPress,
     disabled = false,
     animationSpeed,
@@ -95,12 +95,12 @@ function Button(props: ButtonProps) {
           <Image
             source={icon}
             style={computedStyle.icon}
-            testID="button-icon"
+            testID={testID + "-icon"}
           />
         </Animated.View>
       )}
       {title && (
-        <Text style={computedStyle.title} testID="button-title">
+        <Text style={computedStyle.title} testID={testID + "-title"}>
           {title}
         </Text>
       )}

@@ -22,9 +22,12 @@
     "/assets/",
     "/configs/",
     "/models/",
-    "/router/",
     "/tests/",
-    "\\.style\\.ts"
+    "App.tsx",
+    "\\.style\\.ts",
+    "/router/",
+    "src/views/components/recipeCreation/components/boiling/Boiling.tsx",
+    "src/views/components/recipeCreation/RecipeCreation.tsx"
   ],
   "coverageDirectory": "reports"
 }

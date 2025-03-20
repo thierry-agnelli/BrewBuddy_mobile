@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import {
   Banner,
@@ -27,7 +27,7 @@ import { styles } from "./Register.style";
 /* Models */
 
 /**
- * Succesful register.
+ * Successful register.
  */
 type SuccessfullRegisterType = {
   onPress: () => void;
@@ -50,19 +50,8 @@ function Register(props: DrawerScreenViewProps) {
   /* Refs */
   const formRef = useRef<Form>({});
 
-  /* Hooks */
-
-  // Disable Drawer header.
-  useEffect(
-    () =>
-      navigation.setOptions({
-        headerShown: false,
-      }),
-    [navigation],
-  );
-
   // Input list
-  const textInputsProps = useMemo<FormProps<InputProps>[]>(
+  const textInputsProps = useMemo<FormProps<InputProps<"default">>[]>(
     () => [
       {
         label: "Nom d'utilisateur",
@@ -111,7 +100,7 @@ function Register(props: DrawerScreenViewProps) {
       label: "J'ai lu et j'accepte les CGU",
       name: "cgu",
       style: {
-        label: styles.cguText,
+        // label: styles.cguText,
         ...formErrorClasses.cgu,
       },
       required: true,
@@ -139,7 +128,15 @@ function Register(props: DrawerScreenViewProps) {
             ))}
             <View style={styles.cgu}>
               <CheckBox {...checkBoxProps} testID="cgu-checkbox" />
-              <Text style={styles.cguText}>(CGU)</Text>
+              <TouchableOpacity
+                style={styles.cguButton}
+                onPress={onTermOfUsePressHander}
+                testID={"terms-of-use-button"}
+              >
+                <Text>(</Text>
+                <Text style={styles.cguText}>CGU</Text>
+                <Text>)</Text>
+              </TouchableOpacity>
             </View>
             <Button
               title={!isBtnDisabled ? "Créer un compte" : undefined}
@@ -182,6 +179,13 @@ function Register(props: DrawerScreenViewProps) {
   function onLoginPressHandler() {
     setErrorMessage("");
     navigation.navigate(Routes.LOGIN);
+  }
+
+  /**
+   * Terms of use navigation pressed
+   */
+  function onTermOfUsePressHander() {
+    navigation.navigate(Routes.TERMS_OF_USE);
   }
 
   /**

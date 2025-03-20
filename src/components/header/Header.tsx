@@ -10,12 +10,12 @@ import { styles } from "./Header.style";
  * @returns {JSX.?Element} : The Header.
  */
 function Header() {
-  const { subTitle } = premadeClasses;
+  const { viewContent } = premadeClasses;
 
   /* Render */
   return (
     <View>
-      <Text style={[subTitle, styles.title]}>BrewBuddy</Text>
+      <Text style={[viewContent.title, styles.title]}>BrewBuddy</Text>
     </View>
   );
 }

@@ -54,7 +54,7 @@ function Lexicon(props: DrawerScreenViewProps) {
   /**
    * Button pressed handler.
    */
-  async function onPressHandler() {
+  function onPressHandler() {
     navigation.goBack();
   }
 }

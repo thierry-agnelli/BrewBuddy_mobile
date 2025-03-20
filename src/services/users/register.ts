@@ -43,3 +43,4 @@ function register(user: RegisterUserData): Promise<string> {
 
 /* Export */
 export { register };
+export type { RegisterUserData };

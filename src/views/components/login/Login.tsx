@@ -45,22 +45,14 @@ function Login(props: DrawerScreenViewProps) {
     storage.getItem("authToken").then((token) => {
       if (token) {
         setAuthToken(token);
+
         navigation.navigate(Routes.HOME);
       }
     });
   }, [navigation, setAuthToken]);
 
-  // Disable Drawer header.
-  useEffect(
-    () =>
-      navigation.setOptions({
-        headerShown: false,
-      }),
-    [navigation],
-  );
-
   // Input list
-  const textInputs = useMemo<FormProps<InputProps>[]>(
+  const textInputs = useMemo<FormProps<InputProps<"default">>[]>(
     () => [
       {
         label: "Adresse email",
@@ -105,17 +97,21 @@ function Login(props: DrawerScreenViewProps) {
         </Text>
       </View>
       <View style={styles.loginForm}>
-        {textInputs.map((inputProps) => (
-          <Input key={inputProps.name} {...inputProps} testID="form-input" />
-        ))}
-        <Button
-          title={!isBtnDisabled ? "Connexion" : undefined}
-          icon={isBtnDisabled ? circle : undefined}
-          disabled={isBtnDisabled}
-          animationSpeed={1}
-          onPress={onLoginPressHandler}
-          testID="login-button"
-        />
+        <View style={styles.loginFormInput}>
+          {textInputs.map((inputProps) => (
+            <Input key={inputProps.name} {...inputProps} testID="form-input" />
+          ))}
+        </View>
+        <View style={styles.loginFormButton}>
+          <Button
+            title={!isBtnDisabled ? "Connexion" : undefined}
+            icon={isBtnDisabled ? circle : undefined}
+            disabled={isBtnDisabled}
+            animationSpeed={1}
+            onPress={onLoginPressHandler}
+            testID="login-button"
+          />
+        </View>
         <View style={styles.loginFormBottom}>
           <CheckBox {...checkBoxProps} testID="remember-me" />
           <TouchableOpacity>
@@ -183,7 +179,7 @@ function Login(props: DrawerScreenViewProps) {
    * Register navigation button pressed
    */
   function onRegisterPressHandler() {
-    navigation.navigate("Register");
+    navigation.navigate(Routes.REGISTER);
   }
 
   /* Methods */

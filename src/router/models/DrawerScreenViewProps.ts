@@ -1,3 +1,4 @@
+import { DrawerParamList } from "@models";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 /* DrawerScreenViewProps */
@@ -6,7 +7,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
  * Router Views props.
  */
 type DrawerScreenViewProps = {
-  navigation: DrawerNavigationProp<Record<string, undefined>>;
+  navigation: DrawerNavigationProp<DrawerParamList>;
 };
 
 /* Exports */

@@ -1,7 +1,8 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import { renderHook } from "@testing-library/react-native";
 
-import { useAppContext } from "./useAppContext";
+import { useAppContext } from "@hooks";
+import React from "react";
 
 /**
  * useAppContext hook test.
@@ -14,12 +15,19 @@ describe("useAppContext hook test", () => {
 
   describe("Tests", () => {
     it("Should return AppContext", () => {
-      const { result } = renderHook(useAppContext);
-
-      expect(result.current).toStrictEqual({
+      // Mocks
+      const mockedContext = {
         authToken: null,
         setAuthToken: expect.any(Function),
-      });
+        navigationHistory: [],
+        goBackNavigation: expect.any(Function),
+      };
+      const useContextSpy = jest.spyOn(React, "useContext");
+      useContextSpy.mockReturnValue(mockedContext);
+
+      const { result } = renderHook(useAppContext);
+
+      expect(result.current).toStrictEqual(mockedContext);
     });
   });
 });

@@ -55,6 +55,15 @@ Copy into it content of env.examples.ts and update vars.
 
 ### Android
 
+#### **On your device**
+
+Active this options :
+<ul>
+    <li>Developer mode</li>
+    <li>Debug via USB</li>
+    <li>Install via USB</li>
+</ul>
+
 ##### **Linux system only**
 
 Install android-tools on your system.

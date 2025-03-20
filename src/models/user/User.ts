@@ -6,4 +6,15 @@ type BaseUser = {
   password: string;
 };
 
+/**
+ * User roles.
+ */
+enum UserRoles {
+  USER,
+  PREMIUM,
+  MODERATOR,
+  ADMIN,
+}
+
 export type { BaseUser };
+export { UserRoles };

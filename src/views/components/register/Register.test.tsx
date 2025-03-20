@@ -42,6 +42,24 @@ describe("Register view test", () => {
       });
     });
 
+    it("Should navigate to terms of use view", async () => {
+      const { getByTestId } = render(
+        <Register navigation={mockedNavigation} />,
+      );
+
+      const button = getByTestId("terms-of-use-button");
+
+      await act(() => {
+        fireEvent.press(button);
+      });
+
+      await waitFor(() => {
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(
+          Routes.TERMS_OF_USE,
+        );
+      });
+    });
+
     it("Should handle change fields value", async () => {
       const mockFormRef = {};
       const useRefSpy = jest.spyOn(React, "useRef");

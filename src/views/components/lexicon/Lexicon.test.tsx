@@ -2,7 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 import { render, fireEvent } from "@testing-library/react-native";
 
 import { mockedNavigation } from "@tests";
-import { Lexicon } from "@views";
+import { Lexicon } from "./Lexicon";
 
 /**
  *  Lexicon view test.
@@ -18,7 +18,9 @@ describe("About view test", () => {
     it("Should render", () => {
       const { getByTestId } = render(<Lexicon navigation={mockedNavigation} />);
 
-      expect(getByTestId("lexicon-view")).toBeTruthy();
+      const lexicon = getByTestId("lexicon-view");
+
+      expect(lexicon).toBeDefined();
     });
 
     it("Should call goBack navigation method", () => {

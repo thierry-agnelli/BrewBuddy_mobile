@@ -16,11 +16,15 @@ describe("Button component test", () => {
   describe("Tests", () => {
     it("Should render", () => {
       const { queryByTestId, getByTestId } = render(
-        <Button title={"title-test"} />,
+        <Button title={"title-test"} testID={"test-button"} />,
       );
 
-      const buttonTitle = getByTestId("button-title");
-      const buttonIcon = queryByTestId("button-icon");
+      const button = getByTestId("test-button");
+      const buttonTitle = getByTestId("test-button-title");
+      const buttonIcon = queryByTestId("test-button-icon");
+
+      // Button
+      expect(button).toBeDefined();
 
       // Should display label
       expect(buttonTitle?.props.children).toBe("title-test");
@@ -46,7 +50,7 @@ describe("Button component test", () => {
         <Button title={"test"} onPress={mockedOnPress} />,
       );
 
-      const button = getByTestId("pressable-button");
+      const button = getByTestId("button");
 
       fireEvent.press(button);
 
