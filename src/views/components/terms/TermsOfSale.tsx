@@ -1,12 +1,12 @@
 import { Terms } from "./components/Terms";
-import { DrawerScreenViewProps } from "@models";
+import { DrawerScreenViewProps, Routes } from "@models";
 
 /**
  * Terms of uses View.
  *
  * @returns {JSX.Element} : The component.
  */
-function TermsOfSale(props: DrawerScreenViewProps) {
+function TermsOfSale(props: DrawerScreenViewProps<Routes.TERMS_OF_SALE>) {
   return <Terms term="sale" {...props} />;
 }
 

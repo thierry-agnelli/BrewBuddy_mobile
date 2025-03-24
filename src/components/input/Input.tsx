@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { Text } from "@components";
 import { ChangeEvent, ChangeTextEvent, StyleProps } from "@models";
+import { theme } from "@theme";
 
 import { styles as baseStyles } from "./Input.style";
 import { useComputeStyles } from "@hooks";
@@ -87,6 +88,7 @@ function Input<Keyboard extends KeyboardTypeOptions = "default">({
           computedStyle.fieldError,
           !editable && computedStyle.disabled,
         ]}
+        placeholderTextColor={theme.color.informative}
         onChangeText={onChangeTextHandler}
         testID="input"
         value={currentValue}

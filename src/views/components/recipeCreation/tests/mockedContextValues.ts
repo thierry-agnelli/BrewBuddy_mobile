@@ -26,6 +26,7 @@ const mockedContextValues: RecipeCreationContextValues = {
     },
     {} as IngredientsList,
   ),
+  navigate: jest.fn(),
 };
 
 /* Exports */

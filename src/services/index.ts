@@ -1,3 +1,3 @@
 export * from "./users";
-export * from "./ingredients/getIngredients";
-export * from "./recipes/postRecipe";
+export * from "./ingredients";
+export * from "./recipes";

@@ -4,13 +4,9 @@ import { describe, expect, it, jest } from "@jest/globals";
 import { BASE_MOCKED_RECIPE_MODEL } from "../../views/components/recipeCreation/store/tests/mocks.ts";
 
 import { postRecipe } from "@services";
-import { ServerError } from "@models";
+import { RecipeModelResponse, ServerError } from "@models";
 
 import { serverErrorHandler } from "@utils";
-
-type MockedRecipeResponse = {
-  message: string;
-};
 
 /**
  * Post recipe service test.
@@ -24,16 +20,23 @@ describe("Post recipe service test", () => {
   describe("Tests", () => {
     it("Should successfully post recipe", async () => {
       // Mocks
+      const mockedResponse = {
+        ...BASE_MOCKED_RECIPE_MODEL,
+        _id: "recipeId",
+        isRecipeDoneWriting: true,
+        isInBlackList: false,
+      };
+
       jest.spyOn(global, "fetch").mockResolvedValueOnce({
         ok: true,
         json: jest
-          .fn<() => Promise<MockedRecipeResponse>>()
-          .mockResolvedValueOnce({ message: "Success mocked request" }),
+          .fn<() => Promise<RecipeModelResponse>>()
+          .mockResolvedValueOnce(mockedResponse),
       } as Partial<Response> as Response);
 
       const result = await postRecipe(BASE_MOCKED_RECIPE_MODEL, "authToken");
 
-      expect(result).toBe("Success");
+      expect(result).toStrictEqual(mockedResponse);
     });
 
     it("Should handle request error", async () => {

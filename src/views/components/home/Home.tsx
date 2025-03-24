@@ -11,7 +11,7 @@ import { tank } from "@assets";
  *
  * @returns {JSX.Element} : The component.
  */
-function Home(props: DrawerScreenViewProps) {
+function Home(props: DrawerScreenViewProps<Routes.HOME>) {
   const { navigation } = props;
   const { layout, viewContent } = premadeClasses;
 
@@ -64,7 +64,7 @@ function Home(props: DrawerScreenViewProps) {
    * Button pressed handler.
    */
   function onPressHandler() {
-    navigation.navigate(Routes.LEXICON);
+    navigation.navigate(Routes.LEXICON, {});
   }
 }
 

@@ -98,5 +98,16 @@ const BASE_MOCKED_RECIPE_MODEL: RecipeModel = {
   },
 };
 
+const BASE_MOCKED_RECIPE_MODEL_RESPONSE = {
+  ...BASE_MOCKED_RECIPE_MODEL,
+  _id: "recipeID",
+  isRecipeDoneWriting: true,
+  isInBlackList: false,
+};
+
 /* Exports */
-export { BASE_MOCKED_STATE, BASE_MOCKED_RECIPE_MODEL };
+export {
+  BASE_MOCKED_STATE,
+  BASE_MOCKED_RECIPE_MODEL,
+  BASE_MOCKED_RECIPE_MODEL_RESPONSE,
+};

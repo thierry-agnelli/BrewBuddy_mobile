@@ -1,14 +1,18 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import { Text } from "@components";
+
 import { TermsArticle } from "./article/TermsArticle";
 import { TermsArticleSection } from "./section/TermsArticleSection";
 import { premadeClasses } from "@helpers";
 import { styles } from "./Terms.style";
 import { terms } from "./models/terms";
 import { TermsData } from "./models/terms";
-import { DrawerScreenViewProps } from "@models";
+import { DrawerScreenViewProps, Routes } from "@models";
 import { useAppContext } from "@hooks";
 
-type TermsProps = DrawerScreenViewProps & { term: keyof TermsData };
+type TermsProps = DrawerScreenViewProps<
+  Routes.TERMS_OF_USE | Routes.TERMS_OF_SALE
+> & { term: keyof TermsData };
 
 /**
  * Terms of uses View.

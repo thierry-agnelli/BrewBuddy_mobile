@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { useRef, useState } from "react";
+import { ScrollView, View } from "react-native";
 
 import { premadeClasses } from "@helpers";
-import { Button, CheckBox } from "@components";
-import { IngredientsCategory, RecipeModel } from "@models";
+import { Button, CheckBox, Text } from "@components";
+import { IngredientsCategory, RecipeModel, Routes } from "@models";
 import { firstCharUpperCase } from "@utils";
-import { postRecipe } from "@services";
+import { postRecipe, validateRecipe } from "@services";
 import { useAppContext } from "@hooks";
 import { circle } from "@assets";
 
-import { recipeStore } from "../../store/store.ts";
+import { useRecipeCreationContext } from "../../hooks";
+import { recipeStore, clearRecipe } from "../../store/store.ts";
 import { checkRecipeCreation } from "../../utils/checkRecipeCreation.ts";
 
 import { styles } from "./Summary.style";
@@ -18,15 +19,17 @@ import { styles } from "./Summary.style";
  * Modal props.
  */
 type ModalProps = {
-  onConfirmation: (isConfirmed: boolean) => void;
+  onConfirmation: () => void;
 };
 
 function Summary({ onConfirmation }: ModalProps) {
-  // const [isRecipeEnded, setIsRecipeEnded] = useState<boolean>(false);
   const [isRequesting, setIsRequesting] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
+  const isRecipeEnded = useRef<boolean>(false);
+
   const { authToken } = useAppContext();
+  const { navigate, setStep } = useRecipeCreationContext();
 
   const { viewContent } = premadeClasses;
 
@@ -41,7 +44,8 @@ function Summary({ onConfirmation }: ModalProps) {
         <View style={styles.summaryEndedBox}>
           <CheckBox
             label={"Recette terminée"}
-            // onChange={(e) => setIsRecipeEnded(e.value)}
+            onChange={(e) => (isRecipeEnded.current = e.value)}
+            testID={"recipe-ended"}
           />
         </View>
         <ScrollView style={styles.summaryScroll}>
@@ -160,7 +164,7 @@ function Summary({ onConfirmation }: ModalProps) {
             disabled={isRequesting}
             style={{ button: styles.summaryCardButton }}
             testID={"return-button"}
-            onPress={() => onConfirmation(false)}
+            onPress={() => onConfirmation()}
           />
           <Button
             title={!isRequesting ? "Envoyer" : undefined}
@@ -185,12 +189,29 @@ function Summary({ onConfirmation }: ModalProps) {
     if (!authToken) return;
 
     const recipeModel = formatRecipe();
-    // console.log(recipeModel.recipeIngredients[2]);
+
     setIsRequesting(true);
 
     postRecipe(recipeModel, authToken)
-      .then(() => {
-        onConfirmation(true);
+      .then((recipeResponse) => {
+        onConfirmation();
+
+        // Clear store
+        recipeStore.dispatch(clearRecipe());
+
+        setStep(0);
+
+        if (isRecipeEnded.current) {
+          validateRecipe(recipeResponse._id, authToken)
+            .then(() => {
+              navigate(Routes.RECIPE, {
+                recipe: recipeResponse._id,
+              });
+            })
+            .catch((err) => {
+              setError(err);
+            });
+        } else navigate(Routes.HOME, {});
       })
       .catch((err) => {
         setError(err);
@@ -215,6 +236,7 @@ function Summary({ onConfirmation }: ModalProps) {
           category,
           ingredients: recipe.ingredients[category].map((ingredient) => ({
             ingredientID: ingredient.id,
+            name: ingredient.name,
             quantity: ingredient.qty || null,
           })),
         };

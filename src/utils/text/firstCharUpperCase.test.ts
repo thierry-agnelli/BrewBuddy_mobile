@@ -10,7 +10,7 @@ describe("firstCharUpperCase utils test", () => {
   });
 
   describe("Tests", () => {
-    it("Sould convert firstChar to upper case", () => {
+    it("Should convert firstChar to upper case", () => {
       const firstCharUpperCaseString = firstCharUpperCase("test-string");
 
       expect(firstCharUpperCaseString).toBe("Test-string");

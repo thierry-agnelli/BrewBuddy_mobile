@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
-import { Image, View, Text } from "react-native";
+import { Image, View } from "react-native";
 
 import { premadeClasses } from "@helpers";
-import { Select, Input } from "@components";
+import { Select, Input, Text } from "@components";
 import { ChangeTextEvent } from "@models";
 import { drag } from "@assets";
 

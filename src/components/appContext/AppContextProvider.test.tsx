@@ -6,9 +6,10 @@ import { useAppContext } from "@hooks";
 import { AppContextProvider } from "@components";
 import { Button, Text, View } from "react-native";
 
-import { mockedNavigation } from "@tests";
+import { mocksNavigation } from "@tests";
 // eslint-disable-next-line max-len
 import * as goBackNavigationModule from "./utils/navigation/goBackNavigation.ts";
+import { Routes } from "@models";
 
 /**
  * AppContextProvider component test.
@@ -20,6 +21,9 @@ describe("AppContext component text", () => {
   });
 
   describe("Tests", () => {
+    // Mocks
+    const mockedNavigation = mocksNavigation<Routes>();
+
     function TestComponent() {
       const { authToken, setAuthToken, goBackNavigation } = useAppContext();
 

@@ -2,5 +2,7 @@ export * from "./home/Home";
 export * from "./lexicon/Lexicon";
 export * from "./login/Login";
 export * from "./recipeCreation/RecipeCreation";
+export * from "./recipes/Recipes";
+export * from "./recipe/Recipe";
 export * from "./register/Register";
 export * from "./terms";

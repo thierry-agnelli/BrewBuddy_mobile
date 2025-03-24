@@ -2,10 +2,11 @@ import React from "react";
 import { describe, expect, it, jest } from "@jest/globals";
 import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import { AppContextProvider } from "@components";
-import { mockedNavigation } from "@tests";
 import { Terms } from "./Terms.tsx";
 // eslint-disable-next-line max-len
 import * as goBackNavigationModule from "../../../../components/appContext/utils/navigation/goBackNavigation";
+import { mocksNavigation, mocksRoute } from "@tests";
+import { Routes } from "@models";
 
 /**
  *  Terms view test.
@@ -17,9 +18,20 @@ describe("Terms view test", () => {
   });
 
   describe("Tests", () => {
+    const mockedNavigation = mocksNavigation<
+      Routes.TERMS_OF_USE | Routes.TERMS_OF_SALE
+    >();
+    const mockedRoute = mocksRoute<
+      Routes.TERMS_OF_USE | Routes.TERMS_OF_SALE
+    >();
+
     it("Should render", () => {
       const { getByTestId } = render(
-        <Terms navigation={mockedNavigation} term={"use"} />,
+        <Terms
+          navigation={mockedNavigation}
+          term={"use"}
+          route={mockedRoute}
+        />,
       );
 
       const terms = getByTestId("terms");
@@ -32,7 +44,11 @@ describe("Terms view test", () => {
 
       const { getByTestId } = render(
         <AppContextProvider>
-          <Terms navigation={mockedNavigation} term={"use"} />
+          <Terms
+            navigation={mockedNavigation}
+            term={"use"}
+            route={mockedRoute}
+          />
         </AppContextProvider>,
       );
 

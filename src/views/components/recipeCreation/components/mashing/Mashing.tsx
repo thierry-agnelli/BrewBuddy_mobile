@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { View, Text, Switch } from "react-native";
+import { View, Switch } from "react-native";
 
-import { CheckBox } from "@components";
+import { CheckBox, Text } from "@components";
 import { MashRest } from "./components/MashRest.tsx";
 import {
   recipeStore,

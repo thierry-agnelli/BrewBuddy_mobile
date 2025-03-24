@@ -1,11 +1,14 @@
 import { env } from "@configs";
-import { RecipeModel, ServerError } from "@models";
+import { RecipeModel, RecipeModelResponse, ServerError } from "@models";
 import { serverErrorHandler } from "@utils";
 
 /**
  * Post recipe service.
  */
-function postRecipe(recipe: RecipeModel, authToken: string): Promise<string> {
+function postRecipe(
+  recipe: RecipeModel,
+  authToken: string,
+): Promise<RecipeModelResponse> {
   return new Promise((resolve, reject) =>
     fetch(`${env.API_URL}/api/recipe`, {
       method: "POST",
@@ -21,7 +24,10 @@ function postRecipe(recipe: RecipeModel, authToken: string): Promise<string> {
           const error = await res.json();
           return Promise.reject(error);
         }
-        resolve("Success");
+        return res.json();
+      })
+      .then((json) => {
+        resolve(json);
       })
       .catch((error: ServerError) => {
         // Handling error.

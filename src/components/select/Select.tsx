@@ -2,13 +2,13 @@ import { useRef, useState } from "react";
 import {
   View,
   ScrollView,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Modal,
   Pressable,
 } from "react-native";
 
+import { Text } from "@components";
 import { StyleProps } from "@models";
 import { useComputeStyles } from "@hooks";
 import { aspectRatio } from "@utils";

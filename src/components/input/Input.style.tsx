@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     height: "100%",
     paddingHorizontal: aspectRatio("width", 3),
     paddingVertical: 0,
+    color: theme.color.text,
     borderWidth: theme.border.width,
     borderRadius: theme.border.radius,
     borderColor: theme.color.primary,

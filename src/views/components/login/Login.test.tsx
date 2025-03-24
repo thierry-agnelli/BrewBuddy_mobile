@@ -3,14 +3,18 @@ import React from "react";
 import { describe, expect, it, jest } from "@jest/globals";
 import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 
-import { mockedNavigation } from "@tests";
 import { Login } from "./Login";
 
 import * as authModule from "../../../services/users/authenticate.ts";
 // eslint-disable-next-line max-len
 import * as useAppContextModule from "../../../hooks/appContext/useAppContext.ts";
 import { Routes, StyleProps } from "@models";
-import { mockedGetItem, mockedSetItem } from "@tests";
+import {
+  mockedGetItem,
+  mockedSetItem,
+  mocksNavigation,
+  mocksRoute,
+} from "@tests";
 import { AppContextValues } from "@components";
 
 /**
@@ -29,21 +33,31 @@ describe("Login view test", () => {
       setAuthToken: jest.fn(),
     } as unknown as AppContextValues);
 
+    const mockedNavigation = mocksNavigation<Routes.LOGIN>();
+    const mockedRoute = mocksRoute<Routes.LOGIN>();
+
     it("Should render", () => {
-      const { getByTestId } = render(<Login navigation={mockedNavigation} />);
+      const { getByTestId } = render(
+        <Login navigation={mockedNavigation} route={mockedRoute} />,
+      );
 
       expect(getByTestId("login-title")).toBeDefined();
     });
 
     it("Should navigate to register view", async () => {
-      const { getByTestId } = render(<Login navigation={mockedNavigation} />);
+      const { getByTestId } = render(
+        <Login navigation={mockedNavigation} route={mockedRoute} />,
+      );
 
       const button = getByTestId("register-button");
 
       fireEvent.press(button);
 
       await waitFor(() => {
-        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.REGISTER);
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(
+          Routes.REGISTER,
+          {},
+        );
       });
     });
 
@@ -54,7 +68,7 @@ describe("Login view test", () => {
         .mockRejectedValueOnce("This a test error");
 
       const { getByTestId, getByPlaceholderText } = render(
-        <Login navigation={mockedNavigation} />,
+        <Login navigation={mockedNavigation} route={mockedRoute} />,
       );
 
       const mailInput = getByPlaceholderText("Entrez votre email");
@@ -76,7 +90,7 @@ describe("Login view test", () => {
 
     it("Should display error style", async () => {
       const { getByTestId, getAllByTestId } = render(
-        <Login navigation={mockedNavigation} />,
+        <Login navigation={mockedNavigation} route={mockedRoute} />,
       );
       const button = getByTestId("login-button");
       const required = getAllByTestId("input-required");
@@ -111,7 +125,7 @@ describe("Login view test", () => {
         .mockResolvedValue("");
 
       const { getByTestId, getByPlaceholderText } = render(
-        <Login navigation={mockedNavigation} />,
+        <Login navigation={mockedNavigation} route={mockedRoute} />,
       );
 
       const mailInput = getByPlaceholderText("Entrez votre email");
@@ -135,7 +149,7 @@ describe("Login view test", () => {
       await waitFor(() => {
         expect(mockedSetItem).not.toHaveBeenCalled();
 
-        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME);
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME, {});
       });
 
       await act(() => {
@@ -154,11 +168,10 @@ describe("Login view test", () => {
     it("Should redirect to home if auth token exist in storage", async () => {
       mockedGetItem.mockResolvedValueOnce("authToken");
 
-      render(<Login navigation={mockedNavigation} />);
+      render(<Login navigation={mockedNavigation} route={mockedRoute} />);
 
-      // expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME);
       await waitFor(() => {
-        expect(mockedNavigation.navigate).toHaveBeenCalled();
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME, {});
       });
     });
   });

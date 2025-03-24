@@ -20,7 +20,7 @@ function goBackNavigation(
   if (!previousView) return false;
 
   // Navigate to previous view
-  navigation.navigate(previousView);
+  navigation.navigate(previousView, {});
   // Block standard device back button behaviour to safely navigate
   return true;
 }

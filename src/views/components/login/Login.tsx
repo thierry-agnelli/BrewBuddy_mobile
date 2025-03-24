@@ -20,7 +20,7 @@ import { styles } from "./Login.styles";
 /**
  * login View.
  */
-function Login(props: DrawerScreenViewProps) {
+function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
   const { navigation } = props;
   const { layout, viewTitle } = premadeClasses;
 
@@ -46,7 +46,7 @@ function Login(props: DrawerScreenViewProps) {
       if (token) {
         setAuthToken(token);
 
-        navigation.navigate(Routes.HOME);
+        navigation.navigate(Routes.HOME, {});
       }
     });
   }, [navigation, setAuthToken]);
@@ -169,7 +169,7 @@ function Login(props: DrawerScreenViewProps) {
           await storage.setItem("authToken", token);
         }
         setAuthToken(token);
-        navigation.navigate(Routes.HOME);
+        navigation.navigate(Routes.HOME, {});
       })
       .catch((error) => setErrorMessage(error))
       .finally(() => setIsBtnDisabled(false));
@@ -179,7 +179,7 @@ function Login(props: DrawerScreenViewProps) {
    * Register navigation button pressed
    */
   function onRegisterPressHandler() {
-    navigation.navigate(Routes.REGISTER);
+    navigation.navigate(Routes.REGISTER, {});
   }
 
   /* Methods */

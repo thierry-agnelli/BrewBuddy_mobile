@@ -1,5 +1,6 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text } from "@components";
+
 import { describe, expect, it } from "@jest/globals";
 import { render } from "@testing-library/react-native";
 

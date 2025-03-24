@@ -1,8 +1,9 @@
 import { describe, expect, it } from "@jest/globals";
 import { render, fireEvent } from "@testing-library/react-native";
 
-import { mockedNavigation } from "@tests";
+import { mocksNavigation, mocksRoute } from "@tests";
 import { Lexicon } from "./Lexicon";
+import { Routes } from "@models";
 
 /**
  *  Lexicon view test.
@@ -15,8 +16,13 @@ describe("About view test", () => {
   });
 
   describe("Tests", () => {
+    const mockedNavigation = mocksNavigation<Routes.LEXICON>();
+    const mockedRoute = mocksRoute<Routes.LEXICON>();
+
     it("Should render", () => {
-      const { getByTestId } = render(<Lexicon navigation={mockedNavigation} />);
+      const { getByTestId } = render(
+        <Lexicon navigation={mockedNavigation} route={mockedRoute} />,
+      );
 
       const lexicon = getByTestId("lexicon-view");
 
@@ -24,7 +30,9 @@ describe("About view test", () => {
     });
 
     it("Should call goBack navigation method", () => {
-      const { getByTestId } = render(<Lexicon navigation={mockedNavigation} />);
+      const { getByTestId } = render(
+        <Lexicon navigation={mockedNavigation} route={mockedRoute} />,
+      );
 
       const button = getByTestId("back-button");
 

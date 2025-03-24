@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import { render, fireEvent } from "@testing-library/react-native";
 
-import { mockedNavigation } from "@tests";
+import { mocksNavigation, mocksRoute } from "@tests";
 import { Home } from "./Home";
 import { Routes } from "@models";
 
@@ -16,8 +16,13 @@ describe("Home view test", () => {
   });
 
   describe("Tests", () => {
+    const mockedNavigation = mocksNavigation<Routes.HOME>();
+    const mockedRoute = mocksRoute<Routes.HOME>();
+
     it("Should render", () => {
-      const { getByTestId } = render(<Home navigation={mockedNavigation} />);
+      const { getByTestId } = render(
+        <Home navigation={mockedNavigation} route={mockedRoute} />,
+      );
 
       const content = getByTestId("home-view");
 
@@ -25,13 +30,18 @@ describe("Home view test", () => {
     });
 
     it("Should call navigate navigation method", () => {
-      const { getByTestId } = render(<Home navigation={mockedNavigation} />);
+      const { getByTestId } = render(
+        <Home navigation={mockedNavigation} route={mockedRoute} />,
+      );
 
       const button = getByTestId("navigate-button");
 
       fireEvent.press(button);
 
-      expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.LEXICON);
+      expect(mockedNavigation.navigate).toHaveBeenCalledWith(
+        Routes.LEXICON,
+        {},
+      );
     });
   });
 });

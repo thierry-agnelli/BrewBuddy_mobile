@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
-import { Input } from "@components";
+import { Input, Text } from "@components";
 import { premadeClasses } from "@helpers";
 import { FermentationStepData, Fermentation } from "../../../models";
 import { ChangeTextEvent } from "@models";

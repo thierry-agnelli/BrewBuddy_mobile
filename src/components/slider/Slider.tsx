@@ -1,8 +1,8 @@
 import { useState } from "react";
-
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import BaseSlider from "@react-native-community/slider";
 
+import { Text } from "@components";
 import { premadeClasses } from "@helpers";
 import { useComputeStyles } from "@hooks";
 import { StyleProps } from "@models";

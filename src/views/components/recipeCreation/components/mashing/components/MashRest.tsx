@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View } from "react-native";
 
-import { Input, Button } from "@components";
+import { Input, Button, Text } from "@components";
 import { premadeClasses } from "@helpers";
 import { MashingRest } from "../../../models";
 import { ChangeTextEvent } from "@models";

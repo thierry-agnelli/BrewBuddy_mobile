@@ -19,6 +19,7 @@ type IngredientModel = {
   category: IngredientsCategory;
   ingredients: Array<{
     ingredientID: number;
+    name: string;
     quantity: number | null;
     dryHoping?: boolean;
   }>;
@@ -69,12 +70,19 @@ type StepsModel = {
  * Backend Recipe model.
  */
 type RecipeModel = {
-  // isRecipeDoneWriting: boolean;
-  // isInBlackList: boolean;
   profil: ProfileModel;
   recipeIngredients: Array<IngredientModel>;
   steps: StepsModel;
 };
 
+/**
+ * Backend response recipes model.
+ */
+type RecipeModelResponse = RecipeModel & {
+  _id: string;
+  isRecipeDoneWriting: boolean;
+  isInBlackList: boolean;
+};
+
 /* Exports */
-export type { RecipeModel };
+export type { RecipeModel, RecipeModelResponse, IngredientModel };

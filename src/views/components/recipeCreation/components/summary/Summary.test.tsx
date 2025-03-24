@@ -2,26 +2,33 @@ import { describe, expect, it, jest, beforeEach } from "@jest/globals";
 import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import lodash from "lodash";
 
-import { Summary } from "./Summary.tsx";
-import { recipeStore } from "../../store/store.ts";
+import { AppContextValues } from "@components";
+import { IngredientsList, RecipeModel, Routes } from "@models";
+import { theme } from "@theme";
+import { mocksNavigation } from "@tests";
+
+import { recipeStore } from "../../store/store";
 import {
   BASE_MOCKED_STATE,
   BASE_MOCKED_RECIPE_MODEL,
+  BASE_MOCKED_RECIPE_MODEL_RESPONSE,
 } from "../../store/tests/mocks.ts";
 import {
   BoilingStep,
   IngredientsCategory,
   RecipeIngredient,
 } from "../../models";
-import * as checkRecipeCreationModule from "../../utils/checkRecipeCreation.ts";
+// eslint-disable-next-line max-len
+import * as useRecipeCreationContextModule from "../../hooks/useRecipeCreationContext";
+import * as checkRecipeCreationModule from "../../utils/checkRecipeCreation";
 // eslint-disable-next-line max-len
 import * as useAppContextModule from "../../../../../hooks/appContext/useAppContext";
-import { AppContextValues } from "@components";
+import * as postRecipeModule from "../../../../../services/recipes/postRecipe";
 // eslint-disable-next-line max-len
-import * as postRecipeModule from "../../../../../services/recipes/postRecipe.ts";
-import { RecipeModel } from "@models";
+import * as validateRecipeModule from "../../../../../services/recipes/validateRecipe";
+
 import { RecipeState } from "../../store/models/RecipeState.ts";
-import { theme } from "@theme";
+import { Summary } from "./Summary.tsx";
 
 /**
  * Summary component test.
@@ -34,9 +41,19 @@ describe("Summary component test", () => {
 
   describe("Tests", () => {
     // mocks
+    const mockedNavigation = mocksNavigation<Routes>();
     jest
       .spyOn(useAppContextModule, "useAppContext")
       .mockReturnValue({ authToken: "token" } as AppContextValues);
+    jest
+      .spyOn(useRecipeCreationContextModule, "useRecipeCreationContext")
+      .mockReturnValue({
+        step: 0,
+        setStep: jest.fn(),
+        navigate: mockedNavigation.navigate,
+        ingredientsList: {} as IngredientsList,
+      });
+
     // store
     let mockedState: RecipeState;
 
@@ -187,7 +204,7 @@ describe("Summary component test", () => {
 
       fireEvent.press(button);
 
-      expect(mockedOnConfirmation).toHaveBeenCalledWith(false);
+      expect(mockedOnConfirmation).toHaveBeenCalledWith();
     });
 
     it("Should not send request if no authToken", async () => {
@@ -243,14 +260,14 @@ describe("Summary component test", () => {
       });
 
       await waitFor(() => {
-        expect(mockedOnConfirmation).not.toHaveBeenCalledWith();
+        expect(mockedOnConfirmation).not.toHaveBeenCalled();
 
         const summeryError = getByTestId("summary-error");
         expect(summeryError.props.children).toBe("request error");
       });
     });
 
-    it("Should send request: receive success", async () => {
+    it("Should send request with ended recipe: receive success", async () => {
       // mocks
       mockedState.boiling.boilingSteps.push({
         name: "test-misc",
@@ -266,16 +283,19 @@ describe("Summary component test", () => {
       // malt
       mockedRecipeModel.recipeIngredients[0].ingredients.push({
         ingredientID: 0,
+        name: "test-malt",
         quantity: 99,
       });
       // hop
       mockedRecipeModel.recipeIngredients[1].ingredients.push({
         ingredientID: 1,
+        name: "test-hop",
         quantity: 999,
       });
       // yeasts
       mockedRecipeModel.recipeIngredients[2].ingredients.push({
         ingredientID: 2,
+        name: "test-yeast",
         quantity: null,
       });
       // mashing
@@ -292,10 +312,10 @@ describe("Summary component test", () => {
         duration: 30,
         whenToAdd: 0,
       });
-      // console.log(mockedRecipeModel.recipeIngredients[2]);
+
       const postRecipeSpy = jest
         .spyOn(postRecipeModule, "postRecipe")
-        .mockResolvedValueOnce("success");
+        .mockResolvedValueOnce(BASE_MOCKED_RECIPE_MODEL_RESPONSE);
 
       jest
         .spyOn(checkRecipeCreationModule, "checkRecipeCreation")
@@ -304,6 +324,43 @@ describe("Summary component test", () => {
       jest
         .spyOn(global, "fetch")
         .mockResolvedValueOnce("success" as unknown as Response);
+
+      jest
+        .spyOn(validateRecipeModule, "validateRecipe")
+        .mockResolvedValue("Success");
+
+      const mockedOnConfirmation = jest.fn();
+
+      const { getByTestId } = render(
+        <Summary onConfirmation={mockedOnConfirmation} />,
+      );
+
+      const button = getByTestId("send-button");
+      const recipeEndedCheckbox = getByTestId("recipe-ended");
+
+      await act(() => {
+        fireEvent.press(recipeEndedCheckbox);
+        fireEvent.press(button);
+      });
+
+      await waitFor(() => {
+        expect(postRecipeSpy).toHaveBeenCalledWith(mockedRecipeModel, "token");
+        expect(mockedOnConfirmation).toHaveBeenCalledWith();
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.RECIPE, {
+          recipe: "recipeID",
+        });
+      });
+    });
+
+    // eslint-disable-next-line max-len
+    it("Should send request with no ended recipe: receive success", async () => {
+      jest
+        .spyOn(postRecipeModule, "postRecipe")
+        .mockResolvedValueOnce(BASE_MOCKED_RECIPE_MODEL_RESPONSE);
+
+      jest
+        .spyOn(checkRecipeCreationModule, "checkRecipeCreation")
+        .mockReturnValueOnce(true);
 
       const mockedOnConfirmation = jest.fn();
 
@@ -318,8 +375,7 @@ describe("Summary component test", () => {
       });
 
       await waitFor(() => {
-        expect(postRecipeSpy).toHaveBeenCalledWith(mockedRecipeModel, "token");
-        expect(mockedOnConfirmation).toHaveBeenCalledWith(true);
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.HOME, {});
       });
     });
 
@@ -338,7 +394,7 @@ describe("Summary component test", () => {
 
       const errorStyle = {
         color: theme.color.error,
-        fontWeight: "bold",
+        fontFamily: "Roboto-Bold",
       };
 
       expect(name).toBeDefined();
@@ -349,6 +405,39 @@ describe("Summary component test", () => {
       expect(description.props.style).toEqual(
         expect.objectContaining(errorStyle),
       );
+    });
+
+    it("Should handle validate error", async () => {
+      jest
+        .spyOn(postRecipeModule, "postRecipe")
+        .mockResolvedValueOnce(BASE_MOCKED_RECIPE_MODEL_RESPONSE);
+
+      jest
+        .spyOn(checkRecipeCreationModule, "checkRecipeCreation")
+        .mockReturnValueOnce(true);
+
+      jest
+        .spyOn(validateRecipeModule, "validateRecipe")
+        .mockRejectedValue("Validating error test");
+
+      const mockedOnConfirmation = jest.fn();
+
+      const { getByTestId, getByText } = render(
+        <Summary onConfirmation={mockedOnConfirmation} />,
+      );
+
+      const button = getByTestId("send-button");
+      const recipeEndedCheckbox = getByTestId("recipe-ended");
+
+      await act(() => {
+        fireEvent.press(recipeEndedCheckbox);
+        fireEvent.press(button);
+      });
+
+      await waitFor(() => {
+        const errorMessage = getByText("Validating error test");
+        expect(errorMessage).toBeDefined();
+      });
     });
   });
 });

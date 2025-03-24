@@ -10,6 +10,7 @@ import {
   updateBoiling,
   updateBoilingStep,
   updateFermentation,
+  clearRecipe,
 } from "./store.ts";
 
 /**
@@ -26,9 +27,6 @@ describe("recipe store reducers", () => {
     expect(updateBoiling).toBeDefined();
     expect(updateBoilingStep).toBeDefined();
     expect(updateFermentation).toBeDefined();
-  });
-
-  describe("Tests", () => {
-    it("Should update store", () => {});
+    expect(clearRecipe).toBeDefined();
   });
 });

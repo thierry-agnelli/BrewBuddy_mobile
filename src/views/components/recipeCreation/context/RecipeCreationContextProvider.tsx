@@ -1,6 +1,19 @@
 import { createContext, ReactElement, useEffect, useState } from "react";
 import { getIngredients } from "@services";
-import { IngredientsCategory, IngredientsList } from "@models";
+import {
+  IngredientsCategory,
+  IngredientsList,
+  RouteParameter,
+  Routes,
+} from "@models";
+
+/**
+ * Recipe creation context provider props.
+ */
+type RecipeCreationContextProviderProps = {
+  children: ReactElement;
+  navigate: (routeName: Routes, params: RouteParameter[Routes.RECIPES]) => void;
+};
 
 /**
  * Recipe context values.
@@ -9,6 +22,7 @@ type RecipeCreationContextValues = {
   step: number;
   setStep: (step: number) => void;
   ingredientsList: IngredientsList;
+  navigate: (routeName: Routes, params: RouteParameter[Routes.RECIPES]) => void;
 };
 
 const RecipeCreationContext = createContext<RecipeCreationContextValues>(
@@ -18,7 +32,10 @@ const RecipeCreationContext = createContext<RecipeCreationContextValues>(
 /**
  * App context provider.
  */
-function RecipeCreationContextProvider(props: { children: ReactElement }) {
+function RecipeCreationContextProvider({
+  navigate,
+  children,
+}: RecipeCreationContextProviderProps) {
   const [step, setStep] = useState<number>(0);
   const [ingredientsList, setIngredientsList] = useState<IngredientsList>(
     {} as IngredientsList,
@@ -46,11 +63,12 @@ function RecipeCreationContextProvider(props: { children: ReactElement }) {
     step,
     setStep,
     ingredientsList,
+    navigate,
   };
 
   return (
     <RecipeCreationContext.Provider value={value}>
-      {props.children}
+      {children}
     </RecipeCreationContext.Provider>
   );
 }

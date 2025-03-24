@@ -36,7 +36,7 @@ type SuccessfullRegisterType = {
 /**
  * Register View.
  */
-function Register(props: DrawerScreenViewProps) {
+function Register(props: DrawerScreenViewProps<Routes.REGISTER>) {
   const { navigation } = props;
   const { layout, viewTitle } = premadeClasses;
 
@@ -178,14 +178,14 @@ function Register(props: DrawerScreenViewProps) {
    */
   function onLoginPressHandler() {
     setErrorMessage("");
-    navigation.navigate(Routes.LOGIN);
+    navigation.navigate(Routes.LOGIN, {});
   }
 
   /**
    * Terms of use navigation pressed
    */
   function onTermOfUsePressHander() {
-    navigation.navigate(Routes.TERMS_OF_USE);
+    navigation.navigate(Routes.TERMS_OF_USE, {});
   }
 
   /**

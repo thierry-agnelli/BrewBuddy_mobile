@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { premadeClasses } from "@helpers";
-import { Button, Banner } from "@components";
+import { Button, Banner, Text } from "@components";
 
 // eslint-disable-next-line max-len
 import { RecipeCreationContextProvider } from "./context/RecipeCreationContextProvider";
@@ -17,6 +17,7 @@ import {
 } from "./components";
 
 import { styles } from "./RecipeCreation.style";
+import { DrawerScreenViewProps, Routes } from "@models";
 
 /* Constants */
 const RECIPE_CREATION_STEP = [
@@ -45,9 +46,11 @@ const RECIPE_CREATION_STEP = [
 /**
  * Recipe Creation component.
  */
-function RecipeCreation() {
+function RecipeCreation({
+  navigation,
+}: DrawerScreenViewProps<Routes.RECIPE_CREATION>) {
   return (
-    <RecipeCreationContextProvider>
+    <RecipeCreationContextProvider navigate={navigation.navigate}>
       <BaseRecipeCreation />
     </RecipeCreationContextProvider>
   );
@@ -139,8 +142,8 @@ function BaseRecipeCreation() {
   /**
    * On modal confirmation.
    */
-  function onModalConfirmation(isConfirmed: boolean) {
-    setViewRecipeModal(isConfirmed);
+  function onModalConfirmation() {
+    setViewRecipeModal(false);
   }
 }
 

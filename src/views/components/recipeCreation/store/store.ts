@@ -1,5 +1,4 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
-import { RecipeState } from "./models/RecipeState";
 
 import {
   beerProfileReducer,
@@ -10,44 +9,9 @@ import {
   boilingReducer,
   boilingStepReducer,
   fermentationReducers,
+  clearRecipeReducer,
 } from "./reducers";
-import { IngredientsCategory } from "@models";
-import { RecipeIngredients } from "../models";
-
-const initialRecipeState: RecipeState = {
-  beerProfile: {
-    name: "",
-    description: "",
-    type: "",
-    ebc: 60,
-    ibu: 60,
-  },
-  ingredients: Object.values(IngredientsCategory).reduce((acc, category) => {
-    acc[category] = [];
-    return acc;
-  }, {} as RecipeIngredients),
-  mashing: {
-    mashOut: false,
-    mashRests: [],
-  },
-  boiling: {
-    boilingSteps: [],
-  },
-  fermentation: {
-    primary: {
-      temperature: 0,
-      duration: 0,
-    },
-    secondary: {
-      temperature: 0,
-      duration: 0,
-    },
-    refermenting: {
-      temperature: 0,
-      duration: 0,
-    },
-  },
-};
+import { initialRecipeState } from "./initialState.ts";
 
 const recipeSlice = createSlice({
   name: "recipe",
@@ -61,6 +25,7 @@ const recipeSlice = createSlice({
     updateBoiling: boilingReducer,
     updateBoilingStep: boilingStepReducer,
     updateFermentation: fermentationReducers,
+    clearRecipe: clearRecipeReducer,
   },
 });
 
@@ -77,5 +42,6 @@ export const {
   updateBoiling,
   updateBoilingStep,
   updateFermentation,
+  clearRecipe,
 } = recipeSlice.actions;
 export { recipeStore };

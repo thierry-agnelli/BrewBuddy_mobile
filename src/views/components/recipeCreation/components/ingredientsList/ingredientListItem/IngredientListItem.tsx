@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
-import { Select, Input, Button, CheckBox } from "@components";
+import { Select, Input, Button, CheckBox, Text } from "@components";
 import { IngredientsList, IngredientsCategory } from "@models";
 import { RecipeIngredient, RecipeIngredients } from "../../../models";
 import { ChangeTextEvent } from "@models";

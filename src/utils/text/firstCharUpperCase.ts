@@ -1,5 +1,5 @@
 /**
- * Pour first char to upper case.
+ * Convert first char to upper case.
  */
 
 function firstCharUpperCase(text: string) {

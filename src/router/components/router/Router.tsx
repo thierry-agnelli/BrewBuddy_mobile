@@ -1,44 +1,28 @@
 import { ComponentType, useEffect } from "react";
-
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
 import {
-  DrawerParamList,
   DrawerScreenViewProps,
+  // DrawerScreenViewPropsWithParams,
   Routes,
-  UserRoles,
+  RoutesList,
+  RouteParameter,
+  // unAuthRoutesList,
+  // routesList,
 } from "@models";
-import {
-  Home,
-  Lexicon,
-  Login,
-  RecipeCreation,
-  Register,
-  TermsOfSale,
-  TermsOfUse,
-} from "@views";
 import { Header, ViewWrapper } from "@components";
-import { DrawerContent } from "../../components";
-
 import { useAuthentication } from "@hooks";
-
 import { theme } from "@theme";
+
+import { DrawerContent } from "../../components";
+import { unAuthRoutesList, routesList } from "./routesLists.ts";
+// import { RouteProp } from "@react-navigation/native";
 
 /**
  * Screen factory props.
  */
-type ScreenFactoryProps = {
-  Screen: ComponentType<DrawerScreenViewProps>;
+type ScreenFactoryProps<R extends Routes> = {
+  Screen: ComponentType<DrawerScreenViewProps<R>>;
   isAuthenticated?: boolean;
-};
-
-/**
- * Routes list.
- */
-type RoutesList = {
-  name: Routes;
-  view: ComponentType<DrawerScreenViewProps>;
-  privilege?: UserRoles;
 };
 
 /**
@@ -47,28 +31,12 @@ type RoutesList = {
  * @returns {JSX.?Element} : The Router.
  */
 function Router() {
-  const Drawer = createDrawerNavigator<DrawerParamList>();
+  // const Drawer = createDrawerNavigator<DrawerParamList>();
+  const Drawer = createDrawerNavigator<RouteParameter>();
 
   const { isAuthenticated, role } = useAuthentication();
 
-  const unAuthRoutesList: RoutesList[] = [
-    { name: Routes.LOGIN, view: Login },
-    { name: Routes.REGISTER, view: Register },
-  ];
-
-  const routesList: RoutesList[] = [
-    { name: Routes.HOME, view: Home },
-    {
-      name: Routes.RECIPE_CREATION,
-      view: RecipeCreation,
-      privilege: UserRoles.ADMIN,
-    },
-    { name: Routes.LEXICON, view: Lexicon },
-    { name: Routes.TERMS_OF_USE, view: TermsOfUse },
-    { name: Routes.TERMS_OF_SALE, view: TermsOfSale },
-  ];
-
-  /* Render */
+  /* Rener */
   return (
     <Drawer.Navigator
       initialRouteName={Routes.LOGIN}
@@ -79,22 +47,32 @@ function Router() {
           {...drawerProps}
           routes={[
             ...routesList.reduce((acc: string[], route) => {
-              // Add routes to pannel if user has good privilege.
-              if (!route.privilege || role >= route.privilege)
+              // Add routes to panel if user has good privilege.
+              if (
+                route.drawerMenu &&
+                (!route.privilege || role >= route.privilege)
+              )
                 acc.push(route.name);
               return acc;
             }, []),
           ]}
         />
       )}
-      // Enable left navigation pannel only on authentaicated view.
+      // Enable left navigation panel only on authenticated view.
       screenOptions={{ swipeEnabled: isAuthenticated }}
     >
       {unAuthRoutesList.map((route, index) => (
         <Drawer.Screen
           key={route.name + index}
           name={route.name}
-          component={screenFactory({ Screen: route.view })}
+          component={
+            screenFactory<typeof route.name>({
+              Screen: route.view as ComponentType<
+                DrawerScreenViewProps<typeof route.name>
+              >,
+            }) as RoutesList<typeof route.name>["view"]
+          }
+          initialParams={route.parameters}
         />
       ))}
       {routesList.map((route, index) => (
@@ -102,9 +80,12 @@ function Router() {
           key={route.name + index}
           name={route.name}
           component={screenFactory({
-            Screen: route.view,
+            Screen: route.view as ComponentType<
+              DrawerScreenViewProps<typeof route.name>
+            >,
             isAuthenticated,
           })}
+          initialParams={route.parameters}
           options={
             isAuthenticated
               ? {
@@ -130,10 +111,12 @@ function Router() {
  *
  * @param {ScreenFactoryProps} screenFactoryProps : Component props.
  */
-function screenFactory(screenFactoryProps: ScreenFactoryProps) {
+function screenFactory<R extends Routes>(
+  screenFactoryProps: ScreenFactoryProps<R>,
+): ComponentType<DrawerScreenViewProps<R>> {
   const { Screen, isAuthenticated } = screenFactoryProps;
 
-  return (props: DrawerScreenViewProps) => {
+  return (props: DrawerScreenViewProps<R>) => {
     const { navigation } = props;
 
     // Disable Drawer header if logout.

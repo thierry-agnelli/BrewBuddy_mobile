@@ -1,4 +1,5 @@
 import { UserRoles } from "../user/User";
+
 /**
  * AuthToken
  */
