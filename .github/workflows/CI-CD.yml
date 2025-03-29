@@ -1,11 +1,6 @@
 name: CI/CD
 
 on:
-  push:
-    branches:
-      - develop
-      - main
-      - BB-303-INFRA/DEVSECOPS-CI-CD
   pull_request:
     branches:
       - develop
@@ -32,6 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Type checking
+        run: npm run typecheck
+
+      - name: Check lint rules
+        run: npm run lint
 
       - name: Run tests
         run: npm run test --passWithNoTests
