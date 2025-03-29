@@ -8,13 +8,13 @@ import { Routes, UserRoles } from "@models";
 // eslint-disable-next-line max-len
 import { BASE_MOCKED_RECIPE_MODEL_RESPONSE } from "../recipeCreation/store/tests/mocks";
 import * as getAllRecipesModules from "../../../services/recipes/getAllRecipes";
-// eslint-disable-next-line max-len
-import * as useAuthenticationModule from "../../../hooks/authentication/useAuthentication";
+import * as useAppContextModule from "../../../hooks/appContext/useAppContext";
 import { Recipes } from "./Recipes.tsx";
+import { AppContextValues } from "@components";
+
 /**
  * Recipes component test.
  */
-
 describe("Recipes component test", () => {
   it("Should be defined", () => {
     expect(Recipes).toBeDefined();
@@ -36,14 +36,9 @@ describe("Recipes component test", () => {
 
     it("Should render", async () => {
       // Mocks
-      jest.spyOn(useAuthenticationModule, "useAuthentication").mockReturnValue({
-        email: "",
-        iat: 0,
-        id: 0,
-        pseudo: "",
-        role: UserRoles.USER,
-        isAuthenticated: false,
-      });
+      jest.spyOn(useAppContextModule, "useAppContext").mockReturnValue({
+        user: { role: UserRoles.USER },
+      } as AppContextValues);
 
       const { getByTestId, getAllByTestId, queryByTestId } = render(
         <Recipes navigation={mockedNavigation} route={mockedRoutes} />,
@@ -62,15 +57,9 @@ describe("Recipes component test", () => {
 
     it("Should navigate to create recipe when admin", async () => {
       // Mocks
-
-      jest.spyOn(useAuthenticationModule, "useAuthentication").mockReturnValue({
-        email: "",
-        iat: 0,
-        id: 0,
-        pseudo: "",
-        role: UserRoles.ADMIN,
-        isAuthenticated: false,
-      });
+      jest.spyOn(useAppContextModule, "useAppContext").mockReturnValue({
+        user: { role: UserRoles.ADMIN },
+      } as AppContextValues);
 
       const { getByTestId } = render(
         <Recipes navigation={mockedNavigation} route={mockedRoutes} />,

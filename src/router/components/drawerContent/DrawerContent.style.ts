@@ -1,5 +1,6 @@
 import { Platform, StatusBar, StyleSheet } from "react-native";
 import { theme } from "@theme";
+import { aspectRatio } from "@utils";
 
 /**
  *  DrawerContent styles
@@ -13,25 +14,46 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   header: {
-    flex: 6,
-    paddingBottom: "3%",
+    flex: 0.5,
+    // paddingBottom: "3%",
     paddingRight: "5%",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "flex-end",
-    borderBottomWidth: 1,
-    borderBottomColor: theme.color.primary,
   },
   headerTitle: {
     fontSize: 25,
     fontWeight: "bold",
   },
+  profileBox: {
+    height: aspectRatio("height", 5),
+    paddingLeft: aspectRatio("width", 3),
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: theme.color.primary,
+  },
+  profileIconBox: {
+    height: "100%",
+    width: aspectRatio("height", 5),
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  profileIcon: {
+    height: "80%",
+    width: "80%",
+    tintColor: theme.color.informative,
+  },
+  profileNameBox: {
+    flex: 1,
+    paddingLeft: aspectRatio("width", 2.5),
+  },
   routes: {
-    flex: 87,
+    flex: 8.25,
     overflow: "scroll",
   },
   footer: {
-    flex: 7,
+    flex: 0.75,
     paddingRight: "5%",
     justifyContent: "center",
     alignItems: "flex-end",

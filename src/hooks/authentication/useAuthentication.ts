@@ -1,36 +1,31 @@
+import { useMemo } from "react";
 import { jwtDecode } from "jwt-decode";
-import { AuthTokenPayLoad, DecodedAuthToken } from "@models";
-import { UserRoles } from "@models";
+
+import { UserModel } from "@models";
+
 import { useAppContext } from "../appContext/useAppContext";
 
 /* Models */
-type UseAuthenticationReturns = DecodedAuthToken & {
+type UseAuthenticationReturns = {
+  id: number;
   isAuthenticated: boolean;
 };
 
-/**
+/**a
  * Json Web Token decoder.
  */
 function useAuthentication(): UseAuthenticationReturns {
   const { authToken } = useAppContext();
 
-  if (!authToken)
-    return {
-      email: "",
-      iat: 0,
-      id: 0,
-      pseudo: "",
-      role: UserRoles.USER,
-      isAuthenticated: false,
-    };
+  return useMemo(() => {
+    if (!authToken) {
+      return { id: 0, isAuthenticated: false };
+    }
 
-  const payload = jwtDecode(authToken) as AuthTokenPayLoad;
+    const payload = jwtDecode(authToken) as UserModel;
 
-  return {
-    ...payload,
-    role: UserRoles[payload.role],
-    isAuthenticated: true,
-  };
+    return { id: payload.id, isAuthenticated: true };
+  }, [authToken]);
 }
 
 /* Exports */

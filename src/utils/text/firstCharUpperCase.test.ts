@@ -15,5 +15,17 @@ describe("firstCharUpperCase utils test", () => {
 
       expect(firstCharUpperCaseString).toBe("Test-string");
     });
+
+    it("Should handle void string", () => {
+      const firstCharUpperCaseString = firstCharUpperCase("");
+
+      expect(firstCharUpperCaseString).toBe("");
+    });
+
+    it("Should handle single char", () => {
+      const firstCharUpperCaseString = firstCharUpperCase("a");
+
+      expect(firstCharUpperCaseString).toBe("A");
+    });
   });
 });

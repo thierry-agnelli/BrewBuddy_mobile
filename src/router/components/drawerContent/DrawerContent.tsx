@@ -4,12 +4,14 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from "@react-navigation/drawer";
+
 import { Text } from "@components";
 import { useAppContext } from "@hooks";
 import { storage } from "@utils";
-import { logout } from "@assets";
+import { profile, logout } from "@assets";
 
 import { styles } from "./DrawerContent.style";
+import { Routes, UserRoles } from "@models";
 
 /* Models */
 type DrawerContentProps = DrawerContentComponentProps & {
@@ -22,7 +24,11 @@ type DrawerContentProps = DrawerContentComponentProps & {
 function DrawerContent(props: DrawerContentProps) {
   const { navigation, routes } = props;
 
-  const { setAuthToken } = useAppContext();
+  const context = useAppContext();
+  const {
+    setAuthToken,
+    user: { pseudo },
+  } = context;
 
   /* Render */
   return (
@@ -30,6 +36,14 @@ function DrawerContent(props: DrawerContentProps) {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>BrewBuddy</Text>
       </View>
+      <Pressable style={styles.profileBox} onPress={onProfilePressHandler}>
+        <View style={styles.profileIconBox}>
+          <Image source={profile} style={styles.profileIcon} />
+        </View>
+        <View style={styles.profileNameBox}>
+          <Text>{pseudo}</Text>
+        </View>
+      </Pressable>
       <View style={styles.routes}>
         {routes.map((route) => (
           <DrawerItem
@@ -46,9 +60,7 @@ function DrawerContent(props: DrawerContentProps) {
     </DrawerContentScrollView>
   );
 
-  /**
-   * Handler
-   */
+  /* Handler */
 
   /**
    * Disconnect handler
@@ -56,7 +68,22 @@ function DrawerContent(props: DrawerContentProps) {
   function onDisconnectPressHandler() {
     storage.removeItem("authToken");
     setAuthToken(null);
-    navigation.navigate("Login");
+    context.user = {
+      id: 0,
+      email: "",
+      pseudo: "",
+      role: UserRoles.USER,
+      roleName: UserRoles[UserRoles.USER] as keyof typeof UserRoles,
+      iat: 0,
+    };
+    navigation.navigate(Routes.LOGIN, {});
+  }
+
+  /**
+   * On profile press handle.
+   */
+  function onProfilePressHandler() {
+    navigation.navigate(Routes.PROFILE, {});
   }
 }
 

@@ -1,8 +1,10 @@
-import { createContext, ReactElement, useState, useRef } from "react";
-import { AuthToken, DrawerParamList, Routes } from "@models";
+import { createContext, ReactElement, useRef, useState } from "react";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { goBackNavigation } from "./utils";
 import { NavigationContainerRefWithCurrent } from "@react-navigation/native";
+
+import { AuthToken, DrawerParamList, Routes, User, UserRoles } from "@models";
+
+import { goBackNavigation } from "./utils";
 
 /**
  * AppContext values.
@@ -10,6 +12,7 @@ import { NavigationContainerRefWithCurrent } from "@react-navigation/native";
 type AppContextValues = {
   authToken: AuthToken;
   setAuthToken: (token: AuthToken) => void;
+  user: User;
   navigationHistory: Routes[];
   goBackNavigation: (
     navigation:
@@ -25,11 +28,20 @@ const AppContext = createContext<AppContextValues>({} as AppContextValues);
  */
 function AppContextProvider(props: { children: ReactElement }) {
   const [authToken, setAuthToken] = useState<AuthToken>(null);
+
   const navigationHistory = useRef<Routes[]>([Routes.LOGIN]);
 
   const value: AppContextValues = {
     authToken,
-    setAuthToken,
+    setAuthToken: handleLogin,
+    user: {
+      id: 0,
+      email: "",
+      pseudo: "",
+      role: UserRoles.USER,
+      roleName: UserRoles[UserRoles.USER] as keyof typeof UserRoles,
+      iat: 0,
+    },
     navigationHistory: navigationHistory.current,
     goBackNavigation: (navigation) =>
       goBackNavigation(navigation, navigationHistory.current),
@@ -38,6 +50,11 @@ function AppContextProvider(props: { children: ReactElement }) {
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
   );
+
+  /* Methods */
+  function handleLogin(token: AuthToken) {
+    setAuthToken(token);
+  }
 }
 
 /* Exports */

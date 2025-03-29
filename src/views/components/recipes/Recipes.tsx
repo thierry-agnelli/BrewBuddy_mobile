@@ -10,7 +10,7 @@ import {
   Routes,
   UserRoles,
 } from "@models";
-import { useAuthentication } from "@hooks";
+import { useAppContext } from "@hooks";
 
 import { RecipeCard } from "./components/RecipeCard";
 
@@ -22,7 +22,9 @@ import { styles } from "./Recipes.style";
 function Recipes({ navigation }: DrawerScreenViewProps<Routes.RECIPES>) {
   const [recipes, setRecipes] = useState<RecipeModelResponse[]>();
 
-  const { role } = useAuthentication();
+  const {
+    user: { role },
+  } = useAppContext();
 
   // Get Recipes
   (async () => {

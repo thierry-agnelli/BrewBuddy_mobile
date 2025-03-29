@@ -1,14 +1,17 @@
-import { describe, expect, it } from "@jest/globals";
-import { render, fireEvent } from "@testing-library/react-native";
+import { describe, expect, it, jest } from "@jest/globals";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 
 import { mocksNavigation, mocksRoute } from "@tests";
+import { Routes, UserRoles } from "@models";
+import { AppContextValues } from "@components";
+import { useAppContext } from "@hooks";
+import * as getUserModule from "../../../services/users/getUser";
+
 import { Home } from "./Home";
-import { Routes } from "@models";
 
 /**
  *  Home view test.
  */
-
 describe("Home view test", () => {
   // Should be defined
   it("Should be defined", () => {
@@ -42,6 +45,36 @@ describe("Home view test", () => {
         Routes.LEXICON,
         {},
       );
+    });
+
+    it("Should getUser", async () => {
+      jest.spyOn(getUserModule, "getUser").mockResolvedValue({
+        id: 0,
+        email: "test@test.com",
+        pseudo: "test-user",
+        iat: 0,
+        role: "USER",
+      });
+
+      let context: AppContextValues;
+
+      const TestHomeComponent = () => {
+        context = useAppContext();
+        return <Home navigation={mockedNavigation} route={mockedRoute} />;
+      };
+
+      render(<TestHomeComponent />);
+
+      await waitFor(() => {
+        expect(context.user).toStrictEqual({
+          id: 0,
+          email: "test@test.com",
+          pseudo: "test-user",
+          iat: 0,
+          role: UserRoles.USER,
+          roleName: "USER",
+        });
+      });
     });
   });
 });

@@ -13,9 +13,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: theme.border.radius,
+    backgroundColor: theme.color.primary,
   },
   enabled: {
-    backgroundColor: theme.color.primary,
+    // backgroundColor: theme.color.primary,
   },
   disabled: {
     backgroundColor: theme.color.disable,

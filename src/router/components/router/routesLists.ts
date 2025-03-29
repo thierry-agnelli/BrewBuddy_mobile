@@ -9,6 +9,7 @@ import {
   Home,
   Lexicon,
   Login,
+  Profile,
   Recipe,
   RecipeCreation,
   Recipes,
@@ -50,6 +51,7 @@ const unAuthRoutesList = [
  * Other routes list.
  */
 const routesList = [
+  createRouteItem(Routes.PROFILE, Profile, {}, false),
   createRouteItem(Routes.HOME, Home, {}, true),
   createRouteItem(
     Routes.RECIPE_CREATION,

@@ -8,7 +8,6 @@ import { Routes } from "@models";
 /**
  *  Lexicon view test.
  */
-
 describe("About view test", () => {
   // Should be defined
   it("Should be defined", () => {

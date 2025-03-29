@@ -2,20 +2,16 @@ import { ComponentType, useEffect } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   DrawerScreenViewProps,
-  // DrawerScreenViewPropsWithParams,
   Routes,
   RoutesList,
   RouteParameter,
-  // unAuthRoutesList,
-  // routesList,
 } from "@models";
 import { Header, ViewWrapper } from "@components";
-import { useAuthentication } from "@hooks";
+import { useAppContext, useAuthentication } from "@hooks";
 import { theme } from "@theme";
 
 import { DrawerContent } from "../../components";
 import { unAuthRoutesList, routesList } from "./routesLists.ts";
-// import { RouteProp } from "@react-navigation/native";
 
 /**
  * Screen factory props.
@@ -31,12 +27,14 @@ type ScreenFactoryProps<R extends Routes> = {
  * @returns {JSX.?Element} : The Router.
  */
 function Router() {
-  // const Drawer = createDrawerNavigator<DrawerParamList>();
   const Drawer = createDrawerNavigator<RouteParameter>();
 
-  const { isAuthenticated, role } = useAuthentication();
+  const {
+    user: { role },
+  } = useAppContext();
+  const { isAuthenticated } = useAuthentication();
 
-  /* Rener */
+  /* Render */
   return (
     <Drawer.Navigator
       initialRouteName={Routes.LOGIN}
@@ -88,14 +86,17 @@ function Router() {
           initialParams={route.parameters}
           options={
             isAuthenticated
-              ? {
+              ? ({ navigation }) => ({
                   headerStyle: {
                     backgroundColor: theme.color.background,
                   },
                   headerTintColor: theme.color.dark,
                   headerTitle: "",
-                  headerRight: Header,
-                }
+                  // Must declare Drawer component here to get navigator props.
+                  // eslint-disable-next-line max-len
+                  // eslint-disable-next-line react/no-unstable-nested-components
+                  headerRight: () => <Header navigation={navigation} />,
+                })
               : undefined
           }
         />
