@@ -1,7 +1,7 @@
-import { describe, expect, it, jest } from "@jest/globals";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { BoilStep } from "./BoilStep.tsx";
-import { IngredientsCategory } from "../../../models";
+import { IngredientsCategory, RecipeIngredient } from "../../../models";
 import { recipeStore } from "../../../store/store";
 import { BASE_MOCKED_STATE } from "../../../store/tests/mocks.ts";
 
@@ -31,27 +31,30 @@ describe("BoilingStep Component", () => {
       name: "",
       addingTime: 0,
       isAddingTimeValid: true,
-      unit: "",
       duration: 0,
+      ingredient: {} as RecipeIngredient,
     };
-    const mockedIngredientsList = [
+    const mockedIngredientsList: RecipeIngredient[] = [
       {
         id: 1,
         name: "test-hops",
         measureUnit: "g",
-        dosage: null,
+        dosage: 99,
         qty: 999,
         category: IngredientsCategory.HOPS,
       },
     ];
     const mockedOnChange = jest.fn();
 
+    beforeEach(() => {
+      mockedOnChange.mockReset();
+    });
+
     it("Should render", () => {
       const { getByTestId } = render(
         <BoilStep
           isActive={false}
           item={mockedItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,
@@ -66,7 +69,6 @@ describe("BoilingStep Component", () => {
         <BoilStep
           isActive={false}
           item={mockedItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,
@@ -82,17 +84,26 @@ describe("BoilingStep Component", () => {
         fireEvent.press(dropdownItem[0]);
 
         const selectedIngredient = getByText("test-hops");
-        const displayQuantity = getByText("999");
 
         expect(selectedIngredient).toBeDefined();
-        expect(displayQuantity).toBeDefined();
+        expect(mockedOnChange.mock.calls[0]).toStrictEqual([
+          0,
+          mockedIngredientsList[0],
+          "name",
+          "test-hops",
+        ]);
       });
 
       const addTimeInput = getByTestId("add-input");
       await fireEvent.changeText(addTimeInput, "400");
 
       await waitFor(() => {
-        expect(mockedOnChange).toHaveBeenCalledWith(0, "g", "addingTime", 400);
+        expect(mockedOnChange.mock.calls[1]).toStrictEqual([
+          0,
+          mockedIngredientsList[0],
+          "addingTime",
+          400,
+        ]);
       });
 
       const durationInput = getByTestId("duration-input");
@@ -100,7 +111,12 @@ describe("BoilingStep Component", () => {
       await fireEvent.changeText(durationInput, "42");
 
       await waitFor(() => {
-        expect(mockedOnChange).toHaveBeenCalledWith(0, "g", "duration", 42);
+        expect(mockedOnChange.mock.calls[2]).toStrictEqual([
+          0,
+          mockedIngredientsList[0],
+          "duration",
+          42,
+        ]);
       });
     });
 
@@ -109,7 +125,6 @@ describe("BoilingStep Component", () => {
         <BoilStep
           isActive={false}
           item={mockedItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,
@@ -129,7 +144,12 @@ describe("BoilingStep Component", () => {
       await fireEvent.changeText(addTimeInput, "");
 
       await waitFor(() => {
-        expect(mockedOnChange).toHaveBeenCalledWith(0, "g", "addingTime", 0);
+        expect(mockedOnChange).toHaveBeenCalledWith(
+          0,
+          mockedIngredientsList[0],
+          "addingTime",
+          0,
+        );
       });
     });
 
@@ -147,7 +167,6 @@ describe("BoilingStep Component", () => {
         <BoilStep
           isActive={false}
           item={mockedItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,
@@ -173,7 +192,7 @@ describe("BoilingStep Component", () => {
         addingTime: 0,
         isAddingTimeValid: true,
         duration: 0,
-        unit: "g",
+        ingredient: {} as RecipeIngredient,
       });
 
       jest
@@ -184,7 +203,6 @@ describe("BoilingStep Component", () => {
         <BoilStep
           isActive={false}
           item={mockedItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,
@@ -212,7 +230,6 @@ describe("BoilingStep Component", () => {
         <BoilStep
           isActive={false}
           item={existingMockedItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,
@@ -245,7 +262,6 @@ describe("BoilingStep Component", () => {
         <BoilStep
           isActive={true}
           item={mockedItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,
@@ -271,7 +287,6 @@ describe("BoilingStep Component", () => {
         <BoilStep
           isActive={true}
           item={mockedErrorItem}
-          step={0}
           ingredientList={mockedIngredientsList}
           onChange={mockedOnChange}
         />,

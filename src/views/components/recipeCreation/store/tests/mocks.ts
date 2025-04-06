@@ -41,7 +41,7 @@ const BASE_MOCKED_STATE: RecipeState = {
 
 const BASE_MOCKED_RECIPE_MODEL: RecipeModel = {
   profil: {
-    name: BASE_MOCKED_STATE.beerProfile.name,
+    recipeName: BASE_MOCKED_STATE.beerProfile.name,
     description: BASE_MOCKED_STATE.beerProfile.description,
     ebc: BASE_MOCKED_STATE.beerProfile.ebc,
     ibu: BASE_MOCKED_STATE.beerProfile.ibu,

@@ -1,21 +1,14 @@
-import { RecipeIngredient, IngredientsCategory } from "./Ingredient.ts";
+import { RecipeIngredient } from "./Ingredient.ts";
 
 /**
  * Boiling step.
  */
 type BoilingStep = {
   name: string;
-  addingTime: number | undefined;
+  addingTime: number;
   isAddingTimeValid: boolean;
   duration: number;
-  unit: string;
-};
-
-/**
- * Boiling ingredient list
- */
-type BoilingIngredient = RecipeIngredient & {
-  category: IngredientsCategory;
+  ingredient: RecipeIngredient;
 };
 
 /**
@@ -31,4 +24,4 @@ type DraggableItemProps = BoilingStep & {
 };
 
 /* Exports */
-export type { Boiling, BoilingStep, BoilingIngredient, DraggableItemProps };
+export type { Boiling, BoilingStep, DraggableItemProps };

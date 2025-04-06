@@ -1,3 +1,4 @@
+import { Ingredient } from "@models";
 import {
   BeerProfile,
   RecipeIngredient,
@@ -10,7 +11,6 @@ import {
   FermentationStepData,
   DraggableItemProps,
 } from "../../models";
-import { Ingredient } from "@models";
 
 /**
  * Initial recipe store state.
@@ -38,6 +38,7 @@ type IngredientPayLoad<K extends keyof RecipeIngredient> = {
   ingredientIndex: number;
   ingredientKey: K;
   value: RecipeIngredient[K];
+  // ingredientModel: RecipeIngredient;
   ingredientModel: Ingredient;
 };
 
@@ -70,7 +71,7 @@ type BoilingPayLoad = {
 type BoilingStepPayLoad<K extends keyof BoilingStep> = {
   boilingKey: K;
   stepIndex: number;
-  unit: string;
+  ingredient: RecipeIngredient;
   value: BoilingStep[K];
 };
 

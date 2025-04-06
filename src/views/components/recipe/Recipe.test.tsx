@@ -67,10 +67,18 @@ describe("Recipe view test", () => {
       mockedRecipeResponse.steps.boiling.push({
         whenToAdd: 20,
         duration: 42,
+        ingredient: {
+          ingredientID: 1,
+          quantity: 10,
+        },
       });
       mockedRecipeResponse.steps.boiling.push({
         whenToAdd: 20,
         duration: 42,
+        ingredient: {
+          ingredientID: 2,
+          quantity: 10,
+        },
       });
 
       const getRecipeSpy = jest
@@ -123,9 +131,8 @@ describe("Recipe view test", () => {
       });
     });
 
-    it("Should handle no recipe or ingredient name", async () => {
+    it("Should handle ingredient name", async () => {
       // Mocks
-      mockedRecipeResponse.profil.name = "";
       mockedRecipeResponse.recipeIngredients[0].ingredients.push({
         ingredientID: 1,
         name: "",
@@ -136,6 +143,16 @@ describe("Recipe view test", () => {
         name: "",
         quantity: null,
       });
+
+      mockedRecipeResponse.steps.boiling.push({
+        whenToAdd: 0,
+        duration: 42,
+        ingredient: {
+          ingredientID: 1,
+          quantity: 99,
+        },
+      });
+
       jest
         .spyOn(getRecipeModule, "getRecipe")
         .mockResolvedValueOnce(mockedRecipeResponse);
@@ -144,15 +161,18 @@ describe("Recipe view test", () => {
         recipe: "recipeID",
       });
 
-      const { getByTestId, getAllByTestId } = render(
+      const { getAllByTestId } = render(
         <Recipe navigation={mockedNavigation} route={mockedRoute} />,
       );
       await waitFor(() => {
-        const recipeName = getByTestId("recipe-name");
         const ingredients = getAllByTestId(
           `ingredient-${IngredientsCategory.MALTS}-details`,
         );
-        expect(recipeName.props.children).toBe("<NOM>");
+
+        const boilingIngredientName = getAllByTestId("boiling-ingredient-name");
+
+        expect(boilingIngredientName[0].props.children).toBe("<NOM>");
+
         expect(ingredients[0].props.children).toStrictEqual(["<NOM>", " 99"]);
         expect(ingredients[1].props.children).toStrictEqual(["<NOM>", null]);
       });

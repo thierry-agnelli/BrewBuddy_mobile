@@ -11,7 +11,8 @@
     "test": "jest",
     "test:reports": "npm run test --coverage",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "./android/gradlew bundleRelease"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.0.0",

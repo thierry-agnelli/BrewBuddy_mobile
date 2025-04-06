@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { jwtDecode } from "jwt-decode";
 
-import { UserModel } from "@models";
+import { UserModel, UserRoles } from "@models";
 
 import { useAppContext } from "../appContext/useAppContext";
 
@@ -9,6 +9,7 @@ import { useAppContext } from "../appContext/useAppContext";
 type UseAuthenticationReturns = {
   id: number;
   isAuthenticated: boolean;
+  role: UserRoles;
 };
 
 /**a
@@ -19,12 +20,16 @@ function useAuthentication(): UseAuthenticationReturns {
 
   return useMemo(() => {
     if (!authToken) {
-      return { id: 0, isAuthenticated: false };
+      return { id: 0, isAuthenticated: false, role: UserRoles.USER };
     }
 
     const payload = jwtDecode(authToken) as UserModel;
 
-    return { id: payload.id, isAuthenticated: true };
+    return {
+      id: payload.id,
+      isAuthenticated: true,
+      role: UserRoles[payload.role],
+    };
   }, [authToken]);
 }
 

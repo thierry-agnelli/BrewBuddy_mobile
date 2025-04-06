@@ -9,6 +9,8 @@ import {
 } from "../models/RecipeState.ts";
 import { boilingReducer, boilingStepReducer } from "./boilingReducers.ts";
 import { BASE_MOCKED_STATE } from "../tests/mocks.ts";
+import { Ingredient } from "@models";
+import { RecipeIngredient } from "../../models";
 
 /**
  * Boiling reducers.
@@ -36,7 +38,7 @@ describe("Boiling reducers", () => {
               addingTime: 999,
               isAddingTimeValid: true,
               duration: 10,
-              unit: "g",
+              ingredient: {} as RecipeIngredient,
             },
           ],
         },
@@ -48,7 +50,7 @@ describe("Boiling reducers", () => {
           addingTime: 999,
           isAddingTimeValid: true,
           duration: 10,
-          unit: "g",
+          ingredient: {},
         },
       ]);
     });
@@ -59,7 +61,7 @@ describe("Boiling reducers", () => {
         addingTime: 0,
         isAddingTimeValid: true,
         duration: 42,
-        unit: "g",
+        ingredient: {} as RecipeIngredient,
       };
       mockedRecipeState.boiling.boilingSteps.push(mockedFirstBoilingStep);
 
@@ -67,8 +69,8 @@ describe("Boiling reducers", () => {
         payload: {
           boilingKey: "name",
           stepIndex: 1,
-          unit: "g",
           value: "test-hops",
+          ingredient: {} as Ingredient,
         },
       } as PayloadAction<BoilingStepPayLoad<"name">>);
 
@@ -76,10 +78,10 @@ describe("Boiling reducers", () => {
         mockedFirstBoilingStep,
         {
           name: "test-hops",
-          addingTime: undefined,
+          addingTime: 0,
           isAddingTimeValid: true,
           duration: 0,
-          unit: "g",
+          ingredient: {},
         },
       ]);
     });
@@ -91,7 +93,7 @@ describe("Boiling reducers", () => {
           addingTime: 500,
           isAddingTimeValid: true,
           duration: 10,
-          unit: "g",
+          ingredient: {} as RecipeIngredient,
         },
       ];
 
@@ -100,6 +102,7 @@ describe("Boiling reducers", () => {
           boilingKey: "addingTime",
           stepIndex: 0,
           value: 999,
+          ingredient: {},
         },
       } as PayloadAction<BoilingStepPayLoad<"addingTime">>);
 
@@ -108,8 +111,8 @@ describe("Boiling reducers", () => {
           name: "test-malt",
           addingTime: 999,
           isAddingTimeValid: true,
-          unit: "g",
           duration: 10,
+          ingredient: {},
         },
       ]);
     });
@@ -120,23 +123,23 @@ describe("Boiling reducers", () => {
         addingTime: 99,
         isAddingTimeValid: true,
         duration: 42,
-        unit: "g",
+        ingredient: {} as RecipeIngredient,
       };
       mockedRecipeState.boiling.boilingSteps.push(mockedFirstBoilingStep);
       mockedRecipeState.boiling.boilingSteps.push({
         name: "test-hops",
-        addingTime: undefined,
+        addingTime: 0,
         isAddingTimeValid: true,
         duration: 0,
-        unit: "g",
+        ingredient: {} as RecipeIngredient,
       });
 
       boilingStepReducer<"addingTime">(mockedRecipeState, {
         payload: {
           boilingKey: "addingTime",
           stepIndex: 1,
-          unit: "g",
           value: 0,
+          ingredient: {} as Ingredient,
         },
       } as PayloadAction<BoilingStepPayLoad<"addingTime">>);
 
@@ -147,7 +150,7 @@ describe("Boiling reducers", () => {
           addingTime: 0,
           isAddingTimeValid: false,
           duration: 0,
-          unit: "g",
+          ingredient: {},
         },
       ]);
     });
@@ -158,15 +161,15 @@ describe("Boiling reducers", () => {
         addingTime: 42,
         isAddingTimeValid: true,
         duration: 0,
-        unit: "g",
+        ingredient: {} as RecipeIngredient,
       };
 
       mockedRecipeState.boiling.boilingSteps.push({
         name: "test-malt",
-        addingTime: undefined,
+        addingTime: 0,
         isAddingTimeValid: true,
         duration: 42,
-        unit: "g",
+        ingredient: {} as RecipeIngredient,
       });
       mockedRecipeState.boiling.boilingSteps.push(mockedSecondBoilingStep);
 
@@ -174,8 +177,8 @@ describe("Boiling reducers", () => {
         payload: {
           boilingKey: "addingTime",
           stepIndex: 0,
-          unit: "g",
           value: 99,
+          ingredient: {} as Ingredient,
         },
       } as PayloadAction<BoilingStepPayLoad<"addingTime">>);
 
@@ -185,7 +188,7 @@ describe("Boiling reducers", () => {
           addingTime: 99,
           isAddingTimeValid: false,
           duration: 42,
-          unit: "g",
+          ingredient: {},
         },
         mockedSecondBoilingStep,
       ]);

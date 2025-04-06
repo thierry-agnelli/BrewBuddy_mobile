@@ -54,7 +54,7 @@ function Recipe({ navigation, route }: DrawerScreenViewProps<Routes.RECIPE>) {
     <View style={[layout, styles.recipe]} testID={"recipe"}>
       <View style={styles.recipeName}>
         <Text style={viewContent.title} testID={"recipe-name"}>
-          {internalRecipe?.profil.name || "<NOM>"}
+          {internalRecipe?.profil.recipeName}
         </Text>
       </View>
       <View style={styles.recipeContent}>
@@ -105,8 +105,11 @@ function Recipe({ navigation, route }: DrawerScreenViewProps<Routes.RECIPE>) {
                 <Text style={[styles.sectionItem, styles.italicText]}>
                   Etape n°{index}
                 </Text>
+                <Text testID={"boiling-ingredient-name"}>
+                  {getIngredientName(step.ingredient.ingredientID)}
+                </Text>
                 <Text style={styles.sectionItem}>
-                  Ajout: {step.duration}mn, durée: {step.duration}mn
+                  Ajout: {step.whenToAdd}mn, durée: {step.duration}mn
                 </Text>
               </View>
             ))}
@@ -150,6 +153,24 @@ function Recipe({ navigation, route }: DrawerScreenViewProps<Routes.RECIPE>) {
   /* Events */
   function onListReturnPress() {
     navigation.navigate(Routes.RECIPES, {});
+  }
+
+  /* Methods */
+
+  /**
+   * get Ingredient name by ID.
+   */
+  function getIngredientName(ingredientID: number) {
+    return Object.values(IngredientsCategory).reduce(
+      (acc: string, category) => {
+        const ingredient = recipeIngredients?.[category]?.find(
+          (item) => item.ingredientID === ingredientID,
+        );
+        if (ingredient) return ingredient.name || "<NOM>";
+        return acc;
+      },
+      "",
+    );
   }
 }
 

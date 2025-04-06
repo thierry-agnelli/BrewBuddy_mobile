@@ -2,15 +2,15 @@ import { useState, useMemo, useEffect } from "react";
 import { Image, View } from "react-native";
 
 import { premadeClasses } from "@helpers";
-import { Select, Input, Text } from "@components";
+import { Select, Input } from "@components";
 import { ChangeTextEvent } from "@models";
 import { drag } from "@assets";
 
 import {
   BoilingStep,
-  BoilingIngredient,
   DraggableItemProps,
   IngredientsCategory,
+  RecipeIngredient,
 } from "../../../models";
 import { recipeStore } from "../../../store/store.ts";
 
@@ -29,11 +29,10 @@ const BOILING_CATEGORY = [
 type BoilStepProps = {
   isActive: boolean;
   item: DraggableItemProps;
-  step: number;
-  ingredientList: BoilingIngredient[];
+  ingredientList: RecipeIngredient[];
   onChange: <K extends keyof BoilingStep>(
     step: number,
-    unit: string,
+    ingredient: RecipeIngredient,
     stepKey: K,
     value: BoilingStep[K],
   ) => void;
@@ -45,9 +44,10 @@ type BoilStepProps = {
 function BoilStep({ isActive, item, ingredientList, onChange }: BoilStepProps) {
   /* States */
   const [currentIngredient, setCurrentIngredient] = useState<
-    BoilingIngredient | undefined
+    RecipeIngredient | undefined
   >(undefined);
-  const { key: step } = item;
+
+  const { key: step, name, addingTime, isAddingTimeValid, duration } = item;
   const { boiling } = recipeStore.getState();
 
   /* Hooks */
@@ -72,11 +72,11 @@ function BoilStep({ isActive, item, ingredientList, onChange }: BoilStepProps) {
     setCurrentIngredient(
       ingredientList.find(
         (ingredient) =>
-          ingredient.name === item?.name ||
+          ingredient.name === name ||
           ingredient.name === currentIngredient?.name,
       ),
     );
-  }, [ingredientList, currentIngredient?.name, item]);
+  }, [ingredientList, currentIngredient?.name, item, name]);
 
   /* Render */
   const { viewContent } = premadeClasses;
@@ -86,7 +86,7 @@ function BoilStep({ isActive, item, ingredientList, onChange }: BoilStepProps) {
       style={[
         viewContent.formCard,
         styles.boilingStep,
-        !item.isAddingTimeValid && styles.addingTimeError,
+        !isAddingTimeValid && styles.addingTimeError,
         isActive && styles.active,
       ]}
       testID={"boiling-step"}
@@ -97,17 +97,14 @@ function BoilStep({ isActive, item, ingredientList, onChange }: BoilStepProps) {
       <Select
         data={availableIngredientsSelectData}
         style={styles}
-        value={item.name}
+        value={name}
         onSelect={onIngredientSelectHandler}
       />
-      <View style={styles.ingredientQty}>
-        <Text style={styles.ingredientQtyText}>{currentIngredient?.qty}</Text>
-      </View>
       <Input
         keyboardType={"number-pad"}
         name="addingTime"
         min={0}
-        value={item.addingTime ? String(item.addingTime) : undefined}
+        value={addingTime ? String(addingTime) : undefined}
         style={{ input: styles.boilingInput }}
         placeholder={"temps"}
         editable={!!currentIngredient}
@@ -118,7 +115,7 @@ function BoilStep({ isActive, item, ingredientList, onChange }: BoilStepProps) {
         keyboardType={"number-pad"}
         name={"duration"}
         min={0}
-        value={item.duration ? String(item.duration) : undefined}
+        value={duration ? String(duration) : undefined}
         style={{ input: styles.boilingInput }}
         placeholder={"Durée"}
         editable={!!currentIngredient}
@@ -138,7 +135,7 @@ function BoilStep({ isActive, item, ingredientList, onChange }: BoilStepProps) {
 
     onChange(
       step,
-      currentIngredient!.measureUnit,
+      currentIngredient!,
       e.name as "addingTime" | "duration",
       numberValue,
     );
@@ -153,7 +150,7 @@ function BoilStep({ isActive, item, ingredientList, onChange }: BoilStepProps) {
     );
     setCurrentIngredient(ingredientToAdd);
 
-    onChange(step, ingredientToAdd!.measureUnit, "name", newIngredient);
+    onChange(step, ingredientToAdd!, "name", newIngredient);
   }
 }
 

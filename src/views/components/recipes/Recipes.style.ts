@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
   },
   recipesList: {
     flex: 9,
+    width: "85%",
     paddingHorizontal: aspectRatio("width", 3),
   },
 });

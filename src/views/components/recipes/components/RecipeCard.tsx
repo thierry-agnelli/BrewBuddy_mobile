@@ -34,7 +34,7 @@ function RecipeCard({ recipe, navigate }: RecipeCardProps) {
     >
       <View style={styles.recipeName}>
         <Text style={styles.name} testID={"recipe-name"}>
-          {recipe.profil.name || "<NOM>"}
+          {recipe.profil.recipeName}
         </Text>
       </View>
       <View style={styles.recipeSummary}>

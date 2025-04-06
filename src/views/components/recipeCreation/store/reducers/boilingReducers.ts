@@ -21,7 +21,7 @@ function boilingReducer(
     name: boilingStep.name,
     addingTime: boilingStep.addingTime,
     isAddingTimeValid: boilingStep.isAddingTimeValid,
-    unit: boilingStep.unit,
+    ingredient: boilingStep.ingredient,
     duration: boilingStep.duration,
   }));
 
@@ -42,15 +42,15 @@ function boilingStepReducer<K extends keyof BoilingStep>(
 ) {
   const { boilingSteps } = state.boiling;
 
-  const { boilingKey, stepIndex, unit, value } = actions.payload;
+  const { boilingKey, stepIndex, ingredient, value } = actions.payload;
 
   if (!boilingSteps[stepIndex]) {
     boilingSteps.push({
       name: "",
-      addingTime: undefined,
+      addingTime: 0,
       isAddingTimeValid: true,
       duration: 0,
-      unit,
+      ingredient,
     });
   }
 

@@ -60,7 +60,7 @@ function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
         placeholder: "Entrez votre email",
         autoCapitalize: "none",
         required: true,
-        style: formErrorClasses.mail,
+        style: { input: styles.loginFormInput, ...formErrorClasses.mail },
         onChangeText: onFormChangeHandler,
       },
       {
@@ -70,7 +70,7 @@ function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
         secureTextEntry: true,
         autoCapitalize: "none",
         required: true,
-        style: formErrorClasses.password,
+        style: { input: styles.loginFormInput, ...formErrorClasses.password },
         onChangeText: onFormChangeHandler,
       },
     ],
@@ -97,7 +97,7 @@ function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
         </Text>
       </View>
       <View style={styles.loginForm}>
-        <View style={styles.loginFormInput}>
+        <View style={styles.loginFormInputBox}>
           {textInputs.map((inputProps) => (
             <Input key={inputProps.name} {...inputProps} testID="form-input" />
           ))}

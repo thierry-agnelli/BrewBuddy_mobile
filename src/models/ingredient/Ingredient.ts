@@ -21,10 +21,19 @@ type Ingredient = {
 };
 
 /**
+ * Recipe Ingredient Model.
+ */
+type RecipeIngredientModel = {
+  ingredientID: number;
+  quantity: number;
+  // _id: string;
+};
+
+/**
  * Ingredients list.
  */
 type IngredientsList = Record<IngredientsCategory, Ingredient[]>;
 
 /* Exports */
 export { IngredientsCategory };
-export type { Ingredient, IngredientsList };
+export type { Ingredient, IngredientsList, RecipeIngredientModel };

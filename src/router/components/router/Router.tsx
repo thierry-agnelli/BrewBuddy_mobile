@@ -7,7 +7,7 @@ import {
   RouteParameter,
 } from "@models";
 import { Header, ViewWrapper } from "@components";
-import { useAppContext, useAuthentication } from "@hooks";
+import { useAuthentication } from "@hooks";
 import { theme } from "@theme";
 
 import { DrawerContent } from "../../components";
@@ -29,10 +29,7 @@ type ScreenFactoryProps<R extends Routes> = {
 function Router() {
   const Drawer = createDrawerNavigator<RouteParameter>();
 
-  const {
-    user: { role },
-  } = useAppContext();
-  const { isAuthenticated } = useAuthentication();
+  const { isAuthenticated, role } = useAuthentication();
 
   /* Render */
   return (

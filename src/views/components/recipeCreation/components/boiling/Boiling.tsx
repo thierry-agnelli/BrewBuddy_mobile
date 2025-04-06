@@ -16,7 +16,7 @@ import {
 } from "../../store/store.ts";
 import {
   IngredientsCategory,
-  BoilingIngredient,
+  RecipeIngredient,
   DraggableItemProps,
   BoilingStep,
 } from "../../models";
@@ -41,10 +41,9 @@ function Boiling() {
   const { boiling, ingredients } = recipeStore.getState();
 
   const [boilingSteps, setBoilingSteps] = useState<DraggableItemProps[]>([]);
-  const [ingredientsList, setIngredientsList] = useState<BoilingIngredient[]>(
+  const [ingredientsList, setIngredientsList] = useState<RecipeIngredient[]>(
     [],
   );
-
   /* Effect */
 
   // Ingredient categories.
@@ -54,7 +53,7 @@ function Boiling() {
   );
 
   const computeIngredientsList = useCallback(() => {
-    const list: BoilingIngredient[] = [];
+    const list: RecipeIngredient[] = [];
 
     ingredientCategories.forEach((ingredientCategory) => {
       ingredients[ingredientCategory].forEach((ingredient) => {
@@ -81,7 +80,7 @@ function Boiling() {
             {
               key: 0,
               name: "",
-              unit: "",
+              ingredient: {} as RecipeIngredient,
               addingTime: 0,
               isAddingTimeValid: true,
               duration: 0,
@@ -98,12 +97,11 @@ function Boiling() {
       <Pressable
         key={"boiling-step-" + item.key}
         delayLongPress={300}
-        onLongPress={drag}
+        onLongPress={() => drag()}
       >
         <BoilStep
           isActive={isActive}
           item={item}
-          step={item.key}
           ingredientList={ingredientsList}
           onChange={onStepChangeHandler}
         />
@@ -142,7 +140,7 @@ function Boiling() {
    */
   function onStepChangeHandler<K extends keyof BoilingStep>(
     step: number,
-    unit: string,
+    ingredient: RecipeIngredient,
     boilingKey: K,
     value: BoilingStep[K],
   ) {
@@ -150,7 +148,7 @@ function Boiling() {
       updateBoilingStep({
         boilingKey,
         stepIndex: step,
-        unit,
+        ingredient,
         value,
       }),
     );
@@ -178,7 +176,7 @@ function Boiling() {
     currentSteps.push({
       key: currentSteps.length,
       name: "",
-      unit: "",
+      ingredient: {} as RecipeIngredient,
       addingTime: 0,
       isAddingTimeValid: true,
       duration: 0,

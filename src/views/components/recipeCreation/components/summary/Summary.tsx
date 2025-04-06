@@ -43,7 +43,10 @@ function Summary({ onConfirmation }: ModalProps) {
         <Text style={viewContent.title}>Confirmation de la recette</Text>
         <View style={styles.summaryEndedBox}>
           <CheckBox
-            label={"Recette terminée"}
+            label={
+              "Je valide ma recette " +
+              "(Vous pourrez toujours la valider plus tard)"
+            }
             onChange={(e) => (isRecipeEnded.current = e.value)}
             testID={"recipe-ended"}
           />
@@ -225,7 +228,7 @@ function Summary({ onConfirmation }: ModalProps) {
   function formatRecipe(): RecipeModel {
     return {
       profil: {
-        name: recipe.beerProfile.name,
+        recipeName: recipe.beerProfile.name,
         description: recipe.beerProfile.description,
         ebc: recipe.beerProfile.ebc,
         ibu: recipe.beerProfile.ibu,
@@ -251,7 +254,11 @@ function Summary({ onConfirmation }: ModalProps) {
         },
         boiling: recipe.boiling.boilingSteps.map((boilingStep) => ({
           duration: boilingStep.duration,
-          whenToAdd: boilingStep.addingTime || 0,
+          whenToAdd: boilingStep.addingTime,
+          ingredient: {
+            ingredientID: boilingStep.ingredient.id,
+            quantity: boilingStep.ingredient.qty,
+          },
         })),
         fermenting: {
           totalDurationOfBaseFermenting:

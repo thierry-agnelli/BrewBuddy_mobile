@@ -1,23 +1,24 @@
-import { describe, expect, it, jest, beforeEach } from "@jest/globals";
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import lodash from "lodash";
 
 import { AppContextValues } from "@components";
-import { IngredientsList, RecipeModel, Routes } from "@models";
+import {
+  IngredientsCategory,
+  IngredientsList,
+  RecipeModel,
+  Routes,
+} from "@models";
 import { theme } from "@theme";
 import { mocksNavigation } from "@tests";
 
 import { recipeStore } from "../../store/store";
 import {
-  BASE_MOCKED_STATE,
   BASE_MOCKED_RECIPE_MODEL,
   BASE_MOCKED_RECIPE_MODEL_RESPONSE,
+  BASE_MOCKED_STATE,
 } from "../../store/tests/mocks.ts";
-import {
-  BoilingStep,
-  IngredientsCategory,
-  RecipeIngredient,
-} from "../../models";
+import { RecipeIngredient } from "../../models";
 // eslint-disable-next-line max-len
 import * as useRecipeCreationContextModule from "../../hooks/useRecipeCreationContext";
 import * as checkRecipeCreationModule from "../../utils/checkRecipeCreation";
@@ -89,7 +90,16 @@ describe("Summary component test", () => {
         name: "test-hop",
         addingTime: 10,
         duration: 20,
-      } as BoilingStep);
+        isAddingTimeValid: true,
+        ingredient: {
+          id: 1,
+          name: "test-hop",
+          category: IngredientsCategory.HOPS,
+          dosage: 42,
+          qty: 99,
+          measureUnit: "g",
+        },
+      });
 
       jest.spyOn(recipeStore, "getState").mockReturnValue(mockedState);
     });
@@ -268,13 +278,6 @@ describe("Summary component test", () => {
     });
 
     it("Should send request with ended recipe: receive success", async () => {
-      // mocks
-      mockedState.boiling.boilingSteps.push({
-        name: "test-misc",
-        addingTime: undefined,
-        duration: 30,
-      } as BoilingStep);
-
       // Recipe model.
       const mockedRecipeModel: RecipeModel = lodash.cloneDeep(
         BASE_MOCKED_RECIPE_MODEL,
@@ -307,10 +310,10 @@ describe("Summary component test", () => {
       mockedRecipeModel.steps.boiling.push({
         duration: 20,
         whenToAdd: 10,
-      });
-      mockedRecipeModel.steps.boiling.push({
-        duration: 30,
-        whenToAdd: 0,
+        ingredient: {
+          ingredientID: 1,
+          quantity: 99,
+        },
       });
 
       const postRecipeSpy = jest
@@ -338,9 +341,9 @@ describe("Summary component test", () => {
       const button = getByTestId("send-button");
       const recipeEndedCheckbox = getByTestId("recipe-ended");
 
-      await act(() => {
-        fireEvent.press(recipeEndedCheckbox);
-        fireEvent.press(button);
+      await act(async () => {
+        await fireEvent.press(recipeEndedCheckbox);
+        await fireEvent.press(button);
       });
 
       await waitFor(() => {
@@ -429,9 +432,9 @@ describe("Summary component test", () => {
       const button = getByTestId("send-button");
       const recipeEndedCheckbox = getByTestId("recipe-ended");
 
-      await act(() => {
-        fireEvent.press(recipeEndedCheckbox);
-        fireEvent.press(button);
+      await act(async () => {
+        await fireEvent.press(recipeEndedCheckbox);
+        await fireEvent.press(button);
       });
 
       await waitFor(() => {

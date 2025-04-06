@@ -41,20 +41,6 @@ describe("RecipeCard component test", () => {
       expect(recipeCard).toBeDefined();
     });
 
-    it("Should handle no recipe name", () => {
-      mockedRecipeResponse.profil.name = "";
-
-      const { getByTestId } = render(
-        <RecipeCard
-          navigate={mockedNavigation.navigate}
-          recipe={mockedRecipeResponse}
-        />,
-      );
-
-      const recipeName = getByTestId("recipe-name");
-      expect(recipeName.props.children).toBe("<NOM>");
-    });
-
     it("Should Naviogate to Recipe", () => {
       const { getByTestId } = render(
         <RecipeCard

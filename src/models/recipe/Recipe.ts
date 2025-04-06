@@ -1,11 +1,14 @@
-import { IngredientsCategory } from "../ingredient/Ingredient.ts";
+import {
+  IngredientsCategory,
+  RecipeIngredientModel,
+} from "../ingredient/Ingredient.ts";
 import { Fermentation } from "../../views/components/recipeCreation/models";
 
 /**
  * Beer Profile model.
  */
 type ProfileModel = {
-  name: string;
+  recipeName: string;
   description: string;
   ebc: number;
   ibu: number;
@@ -43,6 +46,7 @@ type MashingModel = {
 type BoilingModel = Array<{
   duration: number;
   whenToAdd: number;
+  ingredient: Omit<RecipeIngredientModel, "_id">;
 }>;
 
 /**

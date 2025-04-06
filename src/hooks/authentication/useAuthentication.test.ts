@@ -6,7 +6,7 @@ import * as jwtDecodeModule from "jwt-decode";
 import { useAuthentication } from "./useAuthentication";
 import * as useAppContextModule from "../appContext/useAppContext";
 import { AppContextValues } from "@components";
-import { User } from "@models";
+import { User, UserRoles } from "@models";
 
 /**
  * useAuthentication hook test.
@@ -21,7 +21,9 @@ describe("useAppContext hook test", () => {
       jest.spyOn(useAppContextModule, "useAppContext").mockReturnValueOnce({
         authToken: null,
         setAuthToken: jest.fn(),
-        user: {} as User,
+        user: {
+          role: UserRoles.USER,
+        } as User,
         navigationHistory: [],
         goBackNavigation: jest.fn(),
       } as AppContextValues);
@@ -31,6 +33,7 @@ describe("useAppContext hook test", () => {
       expect(result.current).toStrictEqual({
         id: 0,
         isAuthenticated: false,
+        role: UserRoles.USER,
       });
     });
 
@@ -38,7 +41,9 @@ describe("useAppContext hook test", () => {
       jest.spyOn(useAppContextModule, "useAppContext").mockReturnValueOnce({
         authToken: "not null",
         setAuthToken: jest.fn(),
-        user: {} as User,
+        user: {
+          role: UserRoles.USER,
+        } as User,
         navigationHistory: [],
         goBackNavigation: jest.fn(),
       } as AppContextValues);
@@ -56,6 +61,7 @@ describe("useAppContext hook test", () => {
       expect(result.current).toStrictEqual({
         id: 1,
         isAuthenticated: true,
+        role: UserRoles.USER,
       });
     });
   });

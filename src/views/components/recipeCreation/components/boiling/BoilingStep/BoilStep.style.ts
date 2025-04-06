@@ -5,7 +5,6 @@ import { theme } from "@theme";
 /**
  * BoilingElement styles.
  */
-
 const styles = StyleSheet.create({
   boilingStep: {
     height: aspectRatio("height", 6),
@@ -25,19 +24,8 @@ const styles = StyleSheet.create({
     tintColor: theme.color.primary,
   },
   select: {
-    width: aspectRatio("width", 27.5),
+    width: aspectRatio("width", 32.5),
     height: aspectRatio("height", 3.5),
-  },
-  ingredientQty: {
-    height: aspectRatio("height", 3.5),
-    width: aspectRatio("width", 6),
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  ingredientQtyText: {
-    color: theme.color.informative,
-    fontSize: theme.font.size.mediumLight,
   },
   boilingInput: {
     width: aspectRatio("width", 16),

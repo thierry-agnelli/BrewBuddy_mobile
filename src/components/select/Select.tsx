@@ -16,6 +16,7 @@ import { aspectRatio } from "@utils";
 import { styles as baseStyles, MAX_DROPDOWN_HEIGHT } from "./Select.style";
 
 /* Models */
+
 /**
  * Style props.
  */
