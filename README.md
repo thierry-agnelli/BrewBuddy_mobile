@@ -33,12 +33,12 @@ Add Android Studio **installation path** to your **PATH** variable.
 #### ANDROID_HOME
 
 ```
- ✖ ANDROID_HOME - Environment variable that points to your Android SDK installation
+ ✖ ANDROID_HOME = installation/path/Android/SDK
 ```
 
 #### Congratulations
 
-Now you can run your code either on Android Studio or Vs Codei
+Now you can run your code either on Android Studio, Vs Code or Webstorm
 
 ## Running application.
 
@@ -73,12 +73,12 @@ _You may have for some device to install specific drivers._
 
 #### Physical device
 
-To configure yout device :
+To configure your device :
 
 <ul>
-    <li>Active developper mode on your phone.</li>
+    <li>Active developer mode on your phone.</li>
     <li>Plug your phone with USB.</li>
-    <li>Select "File transfert".</li>
+    <li>Select "File transfer".</li>
     <li>Accept debugging mode (first time).</li>
 </ul>
 
@@ -96,13 +96,13 @@ npm run dev:android
 
 Wait for app building (first time can be longer).
 
-## Troubles Shooting.
+## Setup Troubles Shooting.
 
 #### FAILURE: Build failed with an exception.
 
 _Gradle build daemon disappeared unexpectedly (it may have been killed or may have crashed)_
 
-Try to type commande from project root folder:
+Try to type command from project root folder:
 
 ```
 cd android && ./gradlew clean
@@ -136,3 +136,77 @@ You can also try to delete _node_modules_ folder and reinstall dependencies.
     <li>Restart Eslint server :</li>   
     Press "<i>ctrl+shift+P</i>" and search "ESLint: Restart ESLint server".
 </ul>
+
+## Installing app on android devices
+
+This guid allows ton install application on mobile device with back running locally on a computer.
+
+Update env file APP_URL (prod) with computer ip address where back is running.
+
+The mobile device needs to be connected on same wifi network than the back computer.
+
+Generate sign key by running this command in your terminal at project root folder location and follow instruction :
+
+```
+keytool -genkey -v -keystore brewbuddy.jks -keyalg RSA -keysize 2048 -validity 10000 -alias brewbuddy
+```
+
+### Android devices configuration
+
+First, you need to have configure your devices with these options :
+
+<ul>
+    <li>Debug via USB</li>
+    <li>Install via USB</li>
+    <li>Plug your phone with USB.</li>
+    <li>Select "File transfer".</li>
+    <li>Accept debugging mode (first time).</li>
+</ul>
+
+### Computer configuration
+
+You need to have installed android sdk build-tools and unzip.
+
+Configure this env var :
+
+```
+ANDROID_HOME = installation/path/Android/SDK
+```
+
+#### Windows only
+
+If you have git installed on your computer, you can find it at this
+location :
+
+```
+/your/git/install/path/usr/bin/unzip.exe
+```
+
+Set up these env var :
+
+```
+$PROGRAM = C:\Program Files
+```
+
+### Launching installation
+
+Plug your device and select "File transfer".
+
+run this command in your terminal.
+
+_<li>Linux</li>_
+
+```
+npm run install:android:linux
+```
+
+_<li>Windows</li>_
+
+```
+npm run install:android:windows
+```
+
+After a while, you will be asked to enter the key password and wait for the script to finish.<br>
+<br>
+<br>
+**Congratulation you can use BrewBuddy for testing.**

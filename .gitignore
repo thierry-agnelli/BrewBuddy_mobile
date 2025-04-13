@@ -76,3 +76,6 @@ reports
 # env
 *env.*
 !*env.examples.*
+
+# App key
+brewbuddy.jks

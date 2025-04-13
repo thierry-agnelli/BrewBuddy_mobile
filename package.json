@@ -12,7 +12,11 @@
     "test:reports": "npm run test --coverage",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "build": "./android/gradlew bundleRelease"
+    "build:android:deploy": "cd android && ./gradlew bundleRelease",
+    "build:android:linux": "./build.sh",
+    "build:android:windows": "powershell -File ./build.ps1",
+    "install:android:linux": "./build.sh -i",
+    "install:android:windows": "powershell -File ./build.ps1 -i"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.0.0",

@@ -30,7 +30,6 @@ function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
     {},
   );
   const [errorMessage, setErrorMessage] = useState<string>("");
-
   /* Refs */
   const formRef = useRef<Form>({});
 
@@ -38,7 +37,6 @@ function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
   const { setAuthToken } = useAppContext();
 
   /* Hooks */
-
   // Redirect
   useEffect(() => {
     // If authToken redirect to homepage
