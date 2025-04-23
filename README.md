@@ -1,5 +1,13 @@
 # Getting Started
 
+# Presentation
+
+This is my school project.
+
+This is an application to assist with home beer brewing.
+
+You'll find in this repo only my work as a mobile developer, as I'm not the owner of the other parts of the application.
+
 ## Check your configuration.
 
 Open terminal, navigate to your app folder and run command :
