@@ -1,6 +1,7 @@
 import { env } from "@configs";
-import { serverErrorHandler } from "@utils";
-import { BaseUser } from "@models";
+import { AuthToken, BaseUser } from "@models";
+
+import { postService } from "../utils/postService.ts";
 
 /* Models */
 
@@ -13,38 +14,20 @@ type LoginUserData = BaseUser;
  * Login server response
  */
 type LoginResponse = {
-  accessToken: string;
+  accessToken: AuthToken;
 };
 
 /**
  * Authenticate service.
  */
-function authenticate(credentials: LoginUserData): Promise<string> {
-  return new Promise((resolve, reject) =>
-    fetch(`${env.API_URL}/api/login`, {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const error = await res.json();
+async function authenticate(credentials: LoginUserData): Promise<AuthToken> {
+  const url = `${env.API_URL}/api/login`;
 
-          return Promise.reject(error);
-        }
-        return res.json();
-      })
-      .then((json: LoginResponse) => resolve(json.accessToken))
-      .catch((error) => {
-        // Handling error.
-        const message = serverErrorHandler(error);
-
-        reject(message);
-      }),
-  );
+  const response = await postService<LoginUserData, LoginResponse>({
+    url,
+    body: credentials,
+  });
+  return response.accessToken;
 }
 
 /* Export */

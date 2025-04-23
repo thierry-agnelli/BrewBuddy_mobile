@@ -13,7 +13,8 @@
     "^@theme(.*)$": "<rootDir>/src/theme$1",
     "^@views(.*)$": "<rootDir>/src/views$1",
     "^@utils(.*)$": "<rootDir>/src/utils$1",
-    "^@hooks(.*)$": "<rootDir>/src/hooks$1"
+    "^@hooks(.*)$": "<rootDir>/src/hooks$1",
+    "^@simulation(.*)$": "<rootDir>/src/simulation$1"
   },
   "collectCoverage": true,
   "collectCoverageFrom": ["src/**/*.{ts,tsx}"],
@@ -22,9 +23,14 @@
     "/assets/",
     "/configs/",
     "/models/",
-    "/router/",
     "/tests/",
-    "\\.style\\.ts"
+    "/simulation/",
+    "App.tsx",
+    "\\.style\\.ts",
+    "/router/",
+    "src/views/components/recipeCreation/components/boiling/Boiling.tsx",
+    "src/views/components/recipeCreation/RecipeCreation.tsx",
+    "src/views/components/recipeRealisation/"
   ],
   "coverageDirectory": "reports"
 }

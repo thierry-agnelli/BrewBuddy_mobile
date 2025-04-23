@@ -4,5 +4,8 @@ export * from "./button/Button";
 export * from "./checkBox/CheckBox";
 export * from "./header/Header";
 export * from "./input/Input";
+export * from "./modal/Modal";
+export * from "./select/Select";
+export * from "./slider/Slider";
 export * from "./text/Text";
 export * from "./viewWrapper/ViewWrapper";

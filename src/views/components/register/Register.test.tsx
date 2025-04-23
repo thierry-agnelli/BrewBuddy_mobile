@@ -2,7 +2,7 @@ import React from "react";
 import { describe, expect, it, jest } from "@jest/globals";
 import { render, fireEvent, act, waitFor } from "@testing-library/react-native";
 
-import { mockedNavigation } from "@tests";
+import { mocksNavigation, mocksRoute } from "@tests";
 import { Register } from "./Register";
 import { Routes, StyleProps } from "@models";
 import * as registerModule from "../../../services/users/register.ts";
@@ -18,9 +18,11 @@ describe("Register view test", () => {
   });
 
   describe("Tests", () => {
+    const mockedNavigation = mocksNavigation<Routes.REGISTER>();
+    const mockedRoute = mocksRoute<Routes.REGISTER>();
     it("Should render", () => {
       const { getByTestId } = render(
-        <Register navigation={mockedNavigation} />,
+        <Register navigation={mockedNavigation} route={mockedRoute} />,
       );
 
       expect(getByTestId("register-title")).toBeDefined();
@@ -28,7 +30,7 @@ describe("Register view test", () => {
 
     it("Should navigate to login view", async () => {
       const { getByTestId } = render(
-        <Register navigation={mockedNavigation} />,
+        <Register navigation={mockedNavigation} route={mockedRoute} />,
       );
 
       const button = getByTestId("login-button");
@@ -38,7 +40,29 @@ describe("Register view test", () => {
       });
 
       await waitFor(() => {
-        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.LOGIN);
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(
+          Routes.LOGIN,
+          {},
+        );
+      });
+    });
+
+    it("Should navigate to terms of use view", async () => {
+      const { getByTestId } = render(
+        <Register navigation={mockedNavigation} route={mockedRoute} />,
+      );
+
+      const button = getByTestId("terms-of-use-button");
+
+      await act(() => {
+        fireEvent.press(button);
+      });
+
+      await waitFor(() => {
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(
+          Routes.TERMS_OF_USE,
+          {},
+        );
       });
     });
 
@@ -55,7 +79,7 @@ describe("Register view test", () => {
       });
 
       const { getAllByTestId } = render(
-        <Register navigation={mockedNavigation} />,
+        <Register navigation={mockedNavigation} route={mockedRoute} />,
       );
 
       const formInputs = getAllByTestId("form-input");
@@ -78,7 +102,7 @@ describe("Register view test", () => {
         .mockRejectedValueOnce("This a test error");
 
       const { getByTestId, getByPlaceholderText } = render(
-        <Register navigation={mockedNavigation} />,
+        <Register navigation={mockedNavigation} route={mockedRoute} />,
       );
 
       const usernameInput = getByPlaceholderText(
@@ -113,7 +137,7 @@ describe("Register view test", () => {
 
     it("Should display error style", async () => {
       const { getByTestId, getAllByTestId } = render(
-        <Register navigation={mockedNavigation} />,
+        <Register navigation={mockedNavigation} route={mockedRoute} />,
       );
       const button = getByTestId("register-button");
       const required = getAllByTestId("input-required");
@@ -148,7 +172,7 @@ describe("Register view test", () => {
         .mockResolvedValue("");
 
       const { getByTestId, getByPlaceholderText } = render(
-        <Register navigation={mockedNavigation} />,
+        <Register navigation={mockedNavigation} route={mockedRoute} />,
       );
 
       const usernameInput = getByPlaceholderText(
@@ -193,7 +217,10 @@ describe("Register view test", () => {
       });
 
       await waitFor(() => {
-        expect(mockedNavigation.navigate).toHaveBeenCalledWith(Routes.LOGIN);
+        expect(mockedNavigation.navigate).toHaveBeenCalledWith(
+          Routes.LOGIN,
+          {},
+        );
       });
     });
   });

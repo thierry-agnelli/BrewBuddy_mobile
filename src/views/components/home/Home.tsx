@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { Image, View } from "react-native";
-import { DrawerScreenViewProps, Routes } from "@models";
+
+import { DrawerScreenViewProps, Routes, UserRoles } from "@models";
 import { Banner, Button, Text } from "@components";
 import { premadeClasses } from "@helpers";
+import { getUser } from "@services";
 import { tank } from "@assets";
+import { useAuthentication, useAppContext } from "@hooks";
 
 /**
  * Home View.
@@ -11,8 +15,25 @@ import { tank } from "@assets";
  *
  * @returns {JSX.Element} : The component.
  */
-function Home(props: DrawerScreenViewProps) {
+function Home(props: DrawerScreenViewProps<Routes.HOME>) {
   const { navigation } = props;
+
+  const context = useAppContext();
+  const { id } = useAuthentication();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await getUser(id, context.authToken || "");
+        context.user = {
+          ...user,
+          role: UserRoles[user.role],
+          roleName: user.role,
+        };
+      } catch (e) {}
+    })();
+  }, [context, context.authToken, id]);
+
   const { layout, viewContent } = premadeClasses;
 
   /* Render */
@@ -64,7 +85,7 @@ function Home(props: DrawerScreenViewProps) {
    * Button pressed handler.
    */
   function onPressHandler() {
-    navigation.navigate(Routes.LEXICON);
+    navigation.navigate(Routes.LEXICON, {});
   }
 }
 

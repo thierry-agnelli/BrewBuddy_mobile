@@ -14,7 +14,8 @@
       "@theme": ["src/theme"],
       "@views": ["src/views"],
       "@utils": ["src/utils"],
-      "@hooks": ["src/hooks"]
+      "@hooks": ["src/hooks"],
+      "@simulation": ["src/simulation"]
     }
   }
 }

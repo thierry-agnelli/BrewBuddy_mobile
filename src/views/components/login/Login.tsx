@@ -20,7 +20,7 @@ import { styles } from "./Login.styles";
 /**
  * login View.
  */
-function Login(props: DrawerScreenViewProps) {
+function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
   const { navigation } = props;
   const { layout, viewTitle } = premadeClasses;
 
@@ -30,7 +30,6 @@ function Login(props: DrawerScreenViewProps) {
     {},
   );
   const [errorMessage, setErrorMessage] = useState<string>("");
-
   /* Refs */
   const formRef = useRef<Form>({});
 
@@ -38,29 +37,20 @@ function Login(props: DrawerScreenViewProps) {
   const { setAuthToken } = useAppContext();
 
   /* Hooks */
-
   // Redirect
   useEffect(() => {
     // If authToken redirect to homepage
     storage.getItem("authToken").then((token) => {
       if (token) {
         setAuthToken(token);
-        navigation.navigate(Routes.HOME);
+
+        navigation.navigate(Routes.HOME, {});
       }
     });
   }, [navigation, setAuthToken]);
 
-  // Disable Drawer header.
-  useEffect(
-    () =>
-      navigation.setOptions({
-        headerShown: false,
-      }),
-    [navigation],
-  );
-
   // Input list
-  const textInputs = useMemo<FormProps<InputProps>[]>(
+  const textInputs = useMemo<FormProps<InputProps<"default">>[]>(
     () => [
       {
         label: "Adresse email",
@@ -68,7 +58,7 @@ function Login(props: DrawerScreenViewProps) {
         placeholder: "Entrez votre email",
         autoCapitalize: "none",
         required: true,
-        style: formErrorClasses.mail,
+        style: { input: styles.loginFormInput, ...formErrorClasses.mail },
         onChangeText: onFormChangeHandler,
       },
       {
@@ -78,7 +68,7 @@ function Login(props: DrawerScreenViewProps) {
         secureTextEntry: true,
         autoCapitalize: "none",
         required: true,
-        style: formErrorClasses.password,
+        style: { input: styles.loginFormInput, ...formErrorClasses.password },
         onChangeText: onFormChangeHandler,
       },
     ],
@@ -105,17 +95,21 @@ function Login(props: DrawerScreenViewProps) {
         </Text>
       </View>
       <View style={styles.loginForm}>
-        {textInputs.map((inputProps) => (
-          <Input key={inputProps.name} {...inputProps} testID="form-input" />
-        ))}
-        <Button
-          title={!isBtnDisabled ? "Connexion" : undefined}
-          icon={isBtnDisabled ? circle : undefined}
-          disabled={isBtnDisabled}
-          animationSpeed={1}
-          onPress={onLoginPressHandler}
-          testID="login-button"
-        />
+        <View style={styles.loginFormInputBox}>
+          {textInputs.map((inputProps) => (
+            <Input key={inputProps.name} {...inputProps} testID="form-input" />
+          ))}
+        </View>
+        <View style={styles.loginFormButton}>
+          <Button
+            title={!isBtnDisabled ? "Connexion" : undefined}
+            icon={isBtnDisabled ? circle : undefined}
+            disabled={isBtnDisabled}
+            animationSpeed={1}
+            onPress={onLoginPressHandler}
+            testID="login-button"
+          />
+        </View>
         <View style={styles.loginFormBottom}>
           <CheckBox {...checkBoxProps} testID="remember-me" />
           <TouchableOpacity>
@@ -170,10 +164,10 @@ function Login(props: DrawerScreenViewProps) {
     authenticate(userLogin)
       .then(async (token) => {
         if (formRef.current.rememberMe) {
-          await storage.setItem("authToken", token);
+          await storage.setItem("authToken", String(token));
         }
         setAuthToken(token);
-        navigation.navigate(Routes.HOME);
+        navigation.navigate(Routes.HOME, {});
       })
       .catch((error) => setErrorMessage(error))
       .finally(() => setIsBtnDisabled(false));
@@ -183,7 +177,7 @@ function Login(props: DrawerScreenViewProps) {
    * Register navigation button pressed
    */
   function onRegisterPressHandler() {
-    navigation.navigate("Register");
+    navigation.navigate(Routes.REGISTER, {});
   }
 
   /* Methods */

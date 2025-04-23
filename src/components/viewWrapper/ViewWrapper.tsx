@@ -1,6 +1,7 @@
 import { SafeAreaView, StatusBar } from "react-native";
-import type { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import { theme } from "@theme";
+
 /**
  * Wrap view in commons base elements.
  *

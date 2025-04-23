@@ -1,6 +1,7 @@
 import { env } from "@configs";
-import { ServerError, BaseUser } from "@models";
-import { serverErrorHandler } from "@utils";
+import { BaseUser } from "@models";
+
+import { postService } from "../utils/postService.ts";
 
 /* Models */
 
@@ -14,32 +15,14 @@ type RegisterUserData = BaseUser & {
 /**
  * Register service.
  */
-function register(user: RegisterUserData): Promise<string> {
-  return new Promise((resolve, reject) =>
-    fetch(`${env.API_URL}/api/users`, {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const error = await res.json();
+async function register(user: RegisterUserData): Promise<string> {
+  const url = `${env.API_URL}/api/users`;
+  const body = user;
 
-          return Promise.reject(error);
-        }
-        resolve("Success");
-      })
-      .catch((error: ServerError) => {
-        // Handling error.
-        const message = serverErrorHandler(error);
-
-        reject(message);
-      }),
-  );
+  await postService<RegisterUserData>({ url, body });
+  return "Success";
 }
 
 /* Export */
 export { register };
+export type { RegisterUserData };

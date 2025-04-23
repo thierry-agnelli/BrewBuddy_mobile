@@ -8,20 +8,27 @@ import { aspectRatio } from "@utils";
 
 const styles = StyleSheet.create({
   input: {
+    height: aspectRatio("height", 3.5),
     width: "100%",
-    marginBottom: aspectRatio("height", 0.5),
+  },
+  disabled: {
+    backgroundColor: theme.color.disable,
   },
   labelBox: {
     flexDirection: "row",
+    alignItems: "flex-end",
   },
   label: {
     fontWeight: "bold",
-    marginBottom: aspectRatio("height", 0.5),
+  },
+  fieldBox: {
+    flex: 7.5,
   },
   field: {
-    height: aspectRatio("height", 5),
-    width: "100%",
+    height: "100%",
     paddingHorizontal: aspectRatio("width", 3),
+    paddingVertical: 0,
+    color: theme.color.text,
     borderWidth: theme.border.width,
     borderRadius: theme.border.radius,
     borderColor: theme.color.primary,

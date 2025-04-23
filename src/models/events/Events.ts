@@ -9,7 +9,7 @@ type ChangeEvent = {
 };
 
 /**
- * Change TextInput event type
+ * Change TextInput event type.
  */
 type ChangeTextEvent = ChangeEvent & {
   value: string;

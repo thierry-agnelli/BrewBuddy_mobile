@@ -1,18 +1,16 @@
-import { NavigationContainer } from "@react-navigation/native";
 import { AppContextProvider } from "@components";
-import { Router } from "@router";
+import { NavigationProvider, Router } from "@router";
+
 /**
  * App component.
- *
- * @returns {JSX.Element} : The App component.
  */
 function App(): React.JSX.Element {
   return (
-    <NavigationContainer>
-      <AppContextProvider>
+    <AppContextProvider>
+      <NavigationProvider>
         <Router />
-      </AppContextProvider>
-    </NavigationContainer>
+      </NavigationProvider>
+    </AppContextProvider>
   );
 }
 

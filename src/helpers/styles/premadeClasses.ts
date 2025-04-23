@@ -25,7 +25,7 @@ const viewContent = StyleSheet.create({
     justifyContent: "space-around",
   },
   titleBox: {
-    flex: 15,
+    flex: 10,
     justifyContent: "center",
   },
   title: {
@@ -62,6 +62,21 @@ const viewContent = StyleSheet.create({
   bottomPageButton: {
     width: aspectRatio("width", 40),
     fontSize: theme.font.size.light,
+  },
+  formCard: {
+    borderWidth: theme.border.bold,
+    borderRadius: theme.border.radius,
+    borderColor: "transparent",
+    backgroundColor: theme.color.backgroundSecondary,
+    shadowColor: theme.color.dark,
+    elevation: 3.5,
+    marginVertical: aspectRatio("height", 1),
+    paddingVertical: aspectRatio("height", 1),
+    paddingHorizontal: aspectRatio("width", 3.5),
+  },
+  addButton: {
+    width: aspectRatio("height", 3.5),
+    height: aspectRatio("height", 3.5),
   },
 });
 

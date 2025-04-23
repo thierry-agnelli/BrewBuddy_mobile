@@ -35,7 +35,11 @@ describe("serverErrorHandler utils test", () => {
           message: "Une erreur sauvage est apparue.",
         },
         // any other values
-        { status: 0, error: "", message: "Une erreur sauvage est apparue." },
+        {
+          status: 0,
+          error: "",
+          message: "Une erreur sauvage est apparue.",
+        },
       ];
 
       errors.forEach((error) =>

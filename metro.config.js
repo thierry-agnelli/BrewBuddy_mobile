@@ -4,7 +4,7 @@ const path = require("path");
  * Metro configuration
  * https://reactnative.dev/docs/metro
  *
- * @type {import('metro-config').MetroConfig}
+ * @type {import("metro-config").MetroConfig}
  */
 
 const srcPath = path.resolve(__dirname, "src");
@@ -23,6 +23,7 @@ const config = {
       "@views": path.resolve(srcPath, "views"),
       "@utils": path.resolve(srcPath, "utils"),
       "@hooks": path.resolve(srcPath, "hooks"),
+      "@simulation": path.resolve(srcPath, "simulation"),
     },
   },
 };

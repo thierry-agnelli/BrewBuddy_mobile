@@ -30,8 +30,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: aspectRatio("height", 0.5),
   },
+  cguButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   cguText: {
     fontSize: theme.font.size.information,
+    color: theme.color.informative,
     fontWeight: "bold",
   },
   inputItem: {

@@ -1,5 +1,5 @@
 import { Image, View } from "react-native";
-import { DrawerScreenViewProps } from "@models";
+import { DrawerScreenViewProps, Routes } from "@models";
 import { Banner, Button, Text } from "@components";
 import { premadeClasses } from "@helpers";
 import { lexicon } from "@assets";
@@ -11,7 +11,7 @@ import { lexicon } from "@assets";
  *
  * @returns {JSX.Element} : The component.
  */
-function Lexicon(props: DrawerScreenViewProps) {
+function Lexicon(props: DrawerScreenViewProps<Routes.LEXICON>) {
   const { navigation } = props;
   const { viewContent, layout } = premadeClasses;
 
@@ -54,7 +54,7 @@ function Lexicon(props: DrawerScreenViewProps) {
   /**
    * Button pressed handler.
    */
-  async function onPressHandler() {
+  function onPressHandler() {
     navigation.goBack();
   }
 }

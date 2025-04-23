@@ -1,6 +1,9 @@
-import { View } from "react-native";
-import { Text } from "../text/Text";
+import { View, TouchableOpacity } from "react-native";
+
 import { premadeClasses } from "@helpers";
+import { DrawerScreenViewProps, Routes } from "@models";
+
+import { Text } from "../text/Text";
 
 import { styles } from "./Header.style";
 
@@ -9,13 +12,19 @@ import { styles } from "./Header.style";
  *
  * @returns {JSX.?Element} : The Header.
  */
-function Header() {
-  const { subTitle } = premadeClasses;
+function Header(props: Omit<DrawerScreenViewProps<Routes>, "route">) {
+  const { navigation } = props;
+  const { viewContent } = premadeClasses;
 
   /* Render */
   return (
     <View>
-      <Text style={[subTitle, styles.title]}>BrewBuddy</Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate(Routes.HOME, {})}
+        testID={"header-home-button"}
+      >
+        <Text style={[viewContent.title, styles.title]}>BrewBuddy</Text>
+      </TouchableOpacity>
     </View>
   );
 }
