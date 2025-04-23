@@ -1,4 +1,4 @@
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, expect, it, jest, beforeEach } from "@jest/globals";
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 
 import { IngredientListItem } from "./IngredientListItem.tsx";
@@ -6,8 +6,11 @@ import * as ReducersModule from "../../../store/store.ts";
 
 import { IngredientsCategory } from "../../../models";
 import { mockedContextValues } from "../../../tests/mockedContextValues";
+import { recipeStore } from "../../../store/store.ts";
+
 // eslint-disable-next-line max-len
 import * as useRecipeCreationContextModule from "../../../hooks/useRecipeCreationContext.ts";
+import { RecipeState } from "../../../store/models/RecipeState.ts";
 
 /**
  * IngredientListItem component test.
@@ -37,8 +40,18 @@ describe("IngredientListItem component test", () => {
       );
     });
 
+    beforeEach(() => {
+      jest.spyOn(recipeStore, "getState").mockReturnValue({
+        ingredients: {
+          [IngredientsCategory.MALTS]: [
+            mockedContextValues.ingredientsList[IngredientsCategory.MALTS][0],
+          ],
+        },
+      } as unknown as RecipeState);
+    });
+
     it("Should render", () => {
-      const { getByTestId } = render(
+      const { getByTestId, getAllByTestId } = render(
         <IngredientListItem
           category={IngredientsCategory.MALTS}
           data={mockedData}
@@ -46,7 +59,30 @@ describe("IngredientListItem component test", () => {
       );
 
       const ingredientListItem = getByTestId("ingredient-list-item");
+      const ingredientFormItems = getAllByTestId("ingredient-form-item");
       expect(ingredientListItem).toBeDefined();
+      expect(ingredientFormItems.length).toBe(1);
+    });
+
+    it("Should render multiple store ingredient", () => {
+      jest.spyOn(recipeStore, "getState").mockReturnValue({
+        ingredients: {
+          [IngredientsCategory.MALTS]: [
+            mockedContextValues.ingredientsList[IngredientsCategory.MALTS][0],
+            mockedContextValues.ingredientsList[IngredientsCategory.MALTS][1],
+          ],
+        },
+      } as unknown as RecipeState);
+
+      const { getAllByTestId } = render(
+        <IngredientListItem
+          category={IngredientsCategory.MALTS}
+          data={mockedData}
+        />,
+      );
+
+      const ingredientFormItems = getAllByTestId("ingredient-form-item");
+      expect(ingredientFormItems.length).toBe(2);
     });
 
     it("Should render with resugaring checkbox", () => {
@@ -63,6 +99,19 @@ describe("IngredientListItem component test", () => {
     });
 
     it("Should render with dosage", async () => {
+      jest.spyOn(recipeStore, "getState").mockReturnValue({
+        ingredients: {
+          [IngredientsCategory.YEASTS]: [
+            {
+              name: "test-yeast",
+              qty: 0,
+              dosage: 1,
+              resugaring: false,
+            },
+          ],
+        },
+      } as unknown as RecipeState);
+
       const mockedDosageData = [
         mockedContextValues.ingredientsList[IngredientsCategory.YEASTS][0],
       ];
@@ -113,6 +162,7 @@ describe("IngredientListItem component test", () => {
 
     it("Should set recipe store", async () => {
       // Spies
+      jest.spyOn(recipeStore, "dispatch");
       const updateIngredientsSpy = jest.spyOn(
         ReducersModule,
         "updateIngredients",
@@ -177,7 +227,7 @@ describe("IngredientListItem component test", () => {
         "updateIngredients",
       );
 
-      const { getByTestId } = render(
+      const { getByTestId, getAllByTestId } = render(
         <IngredientListItem
           category={IngredientsCategory.MALTS}
           data={mockedData}
@@ -187,6 +237,12 @@ describe("IngredientListItem component test", () => {
 
       const input = getByTestId("input");
 
+      const select = getByTestId("select-input");
+      select!.parent!.instance.measureInWindow = mockedMeasureInWindow;
+      fireEvent.press(select);
+      const selectItems = getAllByTestId("select-dropdown-item");
+
+      fireEvent.press(selectItems[0]);
       fireEvent.changeText(input, "999");
 
       await waitFor(() => {

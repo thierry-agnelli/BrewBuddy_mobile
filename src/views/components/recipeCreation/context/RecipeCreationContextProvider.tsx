@@ -16,7 +16,7 @@ type RecipeCreationContextProviderProps = {
 };
 
 /**
- * Recipe context values.
+ * Recipe creation context values.
  */
 type RecipeCreationContextValues = {
   step: number;
@@ -30,7 +30,7 @@ const RecipeCreationContext = createContext<RecipeCreationContextValues>(
 );
 
 /**
- * App context provider.
+ * Recipe creation context provider.
  */
 function RecipeCreationContextProvider({
   navigate,

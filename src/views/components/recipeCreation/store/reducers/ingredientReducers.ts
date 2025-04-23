@@ -17,8 +17,8 @@ function ingredientsReducer<K extends keyof RecipeIngredient>(
   if (!currentIngredientCategory[ingredientIndex]) {
     // Create ingredient.
     currentIngredientCategory.push({
-      id: 1,
-      name: "",
+      id: ingredientModel.id,
+      name: ingredientModel.name,
       measureUnit: ingredientModel.measureUnit,
       dosage: ingredientModel.dosage,
       category: ingredientModel.category,

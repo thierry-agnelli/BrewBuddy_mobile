@@ -164,7 +164,7 @@ function Login(props: DrawerScreenViewProps<Routes.LOGIN>) {
     authenticate(userLogin)
       .then(async (token) => {
         if (formRef.current.rememberMe) {
-          await storage.setItem("authToken", token);
+          await storage.setItem("authToken", String(token));
         }
         setAuthToken(token);
         navigation.navigate(Routes.HOME, {});

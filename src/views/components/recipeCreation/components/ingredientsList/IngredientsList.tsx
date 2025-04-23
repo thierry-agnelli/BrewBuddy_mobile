@@ -1,7 +1,7 @@
 import { ScrollView } from "react-native";
 import { useRecipeCreationContext } from "../../hooks";
 
-import { IngredientsCategory } from "../../models";
+import { IngredientsCategory } from "@models";
 // eslint-disable-next-line max-len
 import { IngredientListItem } from "./ingredientListItem/IngredientListItem.tsx";
 

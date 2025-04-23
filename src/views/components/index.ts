@@ -3,6 +3,7 @@ export * from "./lexicon/Lexicon";
 export * from "./login/Login";
 export * from "./profile/Profile";
 export * from "./recipeCreation/RecipeCreation";
+export * from "./recipeRealisation/RecipeRealisation";
 export * from "./recipes/Recipes";
 export * from "./recipe/Recipe";
 export * from "./register/Register";

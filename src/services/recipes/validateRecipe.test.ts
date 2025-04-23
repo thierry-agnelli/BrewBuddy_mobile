@@ -1,8 +1,8 @@
 import { describe, expect, it, jest } from "@jest/globals";
-import { ServerError } from "@models";
 
 import { validateRecipe } from "@services";
-import { serverErrorHandler } from "@utils";
+import * as getModule from "../utils/getService.ts";
+import { env } from "@configs";
 
 /**
  * Validate recipe service test.
@@ -13,36 +13,17 @@ describe("Validate recipe service test", () => {
   });
 
   describe("Tests", () => {
-    it("Should succesfully get recipe", async () => {
-      // Mocks
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: true,
-        json: jest
-          .fn<() => Promise<string>>()
-          .mockResolvedValueOnce("Response_ok"),
-      } as Partial<Response> as Response);
+    it("Should call get service", () => {
+      const getSpy = jest.spyOn(getModule, "getService");
+      validateRecipe("some_id", "authToken");
+      const mockUrl = `${env.API_URL}/api/recipe/validate/some_id`;
+      const mockHeader = {
+        Authorization: "Bearer authToken",
+        "Content-type": "application/json",
+        accept: "application/json",
+      };
 
-      const response = await validateRecipe("some_id", "authToken");
-      expect(response).toStrictEqual("Success");
-    });
-
-    it("Should handle request error", async () => {
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: false,
-        json: jest
-          .fn<() => Promise<Partial<ServerError>>>()
-          .mockResolvedValueOnce({
-            status: 400,
-          }),
-      } as Partial<Response> as Response);
-
-      await expect(validateRecipe("some_id", "authToken")).rejects.toBe(
-        serverErrorHandler({
-          status: 400,
-          error: "Test-error",
-          message: "Test-message",
-        }),
-      );
+      expect(getSpy).toBeCalledWith({ url: mockUrl, headers: mockHeader });
     });
   });
 });

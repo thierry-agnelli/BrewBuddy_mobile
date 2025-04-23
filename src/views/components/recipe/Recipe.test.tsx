@@ -45,16 +45,22 @@ describe("Recipe view test", () => {
         ingredientID: 1,
         name: "test-malt1",
         quantity: 99,
+        measureUnit: "kg",
+        sugar: false,
       });
       mockedRecipeResponse.recipeIngredients[0].ingredients.push({
         ingredientID: 2,
         name: "test-malt2",
         quantity: 99,
+        measureUnit: "kg",
+        sugar: false,
       });
       mockedRecipeResponse.recipeIngredients[1].ingredients.push({
         ingredientID: 3,
         name: "test-hops",
         quantity: 99,
+        measureUnit: "kg",
+        sugar: false,
       });
       mockedRecipeResponse.steps.mashing.steps.push({
         temperature: 20,
@@ -137,11 +143,15 @@ describe("Recipe view test", () => {
         ingredientID: 1,
         name: "",
         quantity: 99,
+        measureUnit: "kg",
+        sugar: false,
       });
       mockedRecipeResponse.recipeIngredients[0].ingredients.push({
         ingredientID: 1,
         name: "",
         quantity: null,
+        measureUnit: "kg",
+        sugar: false,
       });
 
       mockedRecipeResponse.steps.boiling.push({
@@ -195,6 +205,26 @@ describe("Recipe view test", () => {
       expect(mockedNavigation.navigate).toHaveBeenCalledWith(
         Routes.RECIPES,
         {},
+      );
+    });
+
+    it("Should navigate to recipe realisation view", async () => {
+      // Mocks
+      const mockedRoute = mocksRoute<Routes.RECIPE>({
+        recipe: mockedRecipe,
+      });
+
+      const { getByTestId } = render(
+        <Recipe navigation={mockedNavigation} route={mockedRoute} />,
+      );
+
+      const realisationButton = getByTestId("realisation-button");
+
+      await fireEvent.press(realisationButton);
+
+      expect(mockedNavigation.navigate).toHaveBeenCalledWith(
+        Routes.RECIPE_REALISATION,
+        { recipe: mockedRecipe },
       );
     });
   });

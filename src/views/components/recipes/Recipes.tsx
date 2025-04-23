@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 
 import { premadeClasses } from "@helpers";
@@ -27,11 +27,12 @@ function Recipes({ navigation }: DrawerScreenViewProps<Routes.RECIPES>) {
   } = useAppContext();
 
   // Get Recipes
-  (async () => {
-    const res = await getAllRecipes();
-    setRecipes(res);
-  })();
-
+  useEffect(() => {
+    (async () => {
+      const res = await getAllRecipes();
+      setRecipes(res);
+    })();
+  }, []);
   const { layout } = premadeClasses;
 
   return (

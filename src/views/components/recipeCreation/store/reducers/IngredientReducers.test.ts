@@ -47,7 +47,7 @@ describe("Ingredient reducers", () => {
           [IngredientsCategory.MALTS]: [
             {
               id: 1,
-              name: "",
+              name: "test-malts",
               measureUnit: "g",
               dosage: null,
               category: IngredientsCategory.MALTS,

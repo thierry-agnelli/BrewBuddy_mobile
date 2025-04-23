@@ -1,33 +1,24 @@
 import { env } from "@configs";
-import { ServerError } from "@models";
-import { serverErrorHandler } from "@utils";
+import { AuthToken } from "@models";
+import { getService } from "../utils/getService.ts";
 
 /**
  * Validate recipe service.
  */
-function validateRecipe(recipeId: string, authToken: string) {
-  return new Promise<string>((resolve, reject) =>
-    fetch(`${env.API_URL}/api/recipe/validate/${recipeId}`, {
-      headers: {
-        accept: "application/json",
-        "Content-type": "application/json",
-        Authorization: "Bearer " + authToken,
-      },
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          const error = await res.json();
-          return Promise.reject(error);
-        }
-        resolve("Success");
-      })
-      .catch((error: ServerError) => {
-        // Handling error.
-        const message = serverErrorHandler(error);
-
-        reject(message);
-      }),
-  );
+function validateRecipe(
+  recipeId: string,
+  authToken: AuthToken,
+): Promise<undefined> {
+  const url = `${env.API_URL}/api/recipe/validate/${recipeId}`;
+  const headers = {
+    accept: "application/json",
+    "Content-type": "application/json",
+    Authorization: "Bearer " + authToken,
+  };
+  return getService<undefined>({
+    url,
+    headers,
+  });
 }
 
 /* Exports */

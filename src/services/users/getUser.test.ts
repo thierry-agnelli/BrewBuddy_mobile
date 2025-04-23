@@ -1,8 +1,6 @@
 import { describe, expect, it, jest } from "@jest/globals";
-
-import { ServerError, UserModel } from "@models";
-import { serverErrorHandler } from "@utils";
-
+import * as getModule from "../utils/getService.ts";
+import { env } from "@configs";
 import { getUser } from "./getUser";
 
 /**
@@ -16,42 +14,17 @@ describe("Get user service test", () => {
   });
 
   describe("tests", () => {
-    it("Should reject request", async () => {
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: false,
-        json: jest.fn<() => Promise<ServerError>>().mockResolvedValueOnce({
-          status: 401,
-          error: "mockedError",
-          message: "Mocked error.",
-        }),
-      } as Partial<Response> as Response);
-
-      await expect(getUser(0, "test-token")).rejects.toBe(
-        serverErrorHandler({
-          status: 401,
-          error: "mockedError",
-          message: "Mocked error.",
-        }),
-      );
-    });
-
-    it("Should allow authentication", async () => {
-      const mockedUser: UserModel = {
-        pseudo: "test-user",
-        email: "test@test.com",
-        iat: 0,
-        id: 1,
-        role: "USER",
+    it("Should call get service", () => {
+      const getSpy = jest.spyOn(getModule, "getService");
+      getUser(0, "test-token");
+      const mockUrl = `${env.API_URL}/api/users/0`;
+      const mockHeader = {
+        Authorization: "Bearer test-token",
+        "Content-type": "application/json",
+        accept: "application/json",
       };
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: true,
-        json: jest
-          .fn<() => Promise<UserModel>>()
-          .mockResolvedValueOnce(mockedUser),
-      } as Partial<Response> as Response);
 
-      const response = await getUser(0, "test-token");
-      expect(response).toStrictEqual(mockedUser);
+      expect(getSpy).toBeCalledWith({ url: mockUrl, headers: mockHeader });
     });
   });
 });

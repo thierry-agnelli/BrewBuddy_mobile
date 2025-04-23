@@ -68,6 +68,7 @@ function Router() {
             }) as RoutesList<typeof route.name>["view"]
           }
           initialParams={route.parameters}
+          options={{ unmountOnBlur: true }}
         />
       ))}
       {routesList.map((route, index) => (
@@ -93,6 +94,7 @@ function Router() {
                   // eslint-disable-next-line max-len
                   // eslint-disable-next-line react/no-unstable-nested-components
                   headerRight: () => <Header navigation={navigation} />,
+                  unmountOnBlur: true,
                 })
               : undefined
           }

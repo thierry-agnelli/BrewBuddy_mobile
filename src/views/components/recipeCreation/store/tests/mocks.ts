@@ -40,6 +40,8 @@ const BASE_MOCKED_STATE: RecipeState = {
 };
 
 const BASE_MOCKED_RECIPE_MODEL: RecipeModel = {
+  isRecipeDoneWriting: true,
+  isInBlackList: false,
   profil: {
     recipeName: BASE_MOCKED_STATE.beerProfile.name,
     description: BASE_MOCKED_STATE.beerProfile.description,

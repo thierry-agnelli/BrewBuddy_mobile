@@ -40,12 +40,11 @@ function IngredientListItem<C extends IngredientsCategory>({
   resugaring,
 }: IngredientListItemProps<C>) {
   const ingredients = recipeStore.getState().ingredients[category];
-
   // FirstChar to upper case.
   const label = category.charAt(0).toUpperCase() + category.slice(1);
 
   const [ingredientNumber, setIngredientNumber] = useState<number>(
-    ingredients?.length || 1,
+    ingredients.length || 1,
   );
 
   const { viewContent } = premadeClasses;
@@ -92,16 +91,15 @@ function IngredientFormItem<C extends IngredientsCategory>({
   index,
   resugaring,
 }: IngredientFormItemProps<C>) {
-  const currentIngredient =
-    recipeStore.getState().ingredients[category]?.[index];
+  const [currentIngredient, setCurrentIngredient] = useState(
+    recipeStore.getState().ingredients[category]?.[index],
+  );
 
   const [dosage, setDosage] = useState<string>(
     currentIngredient?.dosage ? String(currentIngredient?.dosage) : "",
   );
 
   const { ingredientsList } = useRecipeCreationContext();
-
-  const ingredientModel = ingredientsList[category]?.[0];
 
   const selectData = data ? data.map((ingredientEl) => ingredientEl.name) : [];
 
@@ -127,7 +125,7 @@ function IngredientFormItem<C extends IngredientsCategory>({
         )}
       </View>
       <View style={styles.qtyBox}>
-        {ingredientModel?.dosage ? (
+        {currentIngredient?.dosage ? (
           <View style={[styles.qty, styles.dosage]} testID={"dosage"}>
             <Text>{dosage}</Text>
           </View>
@@ -137,12 +135,13 @@ function IngredientFormItem<C extends IngredientsCategory>({
             placeholder="Qté"
             keyboardType={"number-pad"}
             style={{ input: styles.qty }}
+            editable={!!currentIngredient}
             onChangeText={(e: ChangeTextEvent) =>
               setIngredient("qty", parseInt(e.value, 10))
             }
           />
         )}
-        <Text style={styles.measureUnit}>{ingredientModel?.measureUnit}</Text>
+        <Text style={styles.measureUnit}>{currentIngredient?.measureUnit}</Text>
       </View>
     </View>
   );
@@ -156,6 +155,12 @@ function IngredientFormItem<C extends IngredientsCategory>({
     ingredientKey: K,
     value: RecipeIngredient[K],
   ) {
+    const ingredientModel = ingredientsList[category]!.find(
+      (ingredient) =>
+        ingredient.name ===
+        (ingredientKey === "name" ? value : currentIngredient?.name),
+    )!;
+
     recipeStore.dispatch(
       updateIngredients({
         ingredientIndex: index,
@@ -164,6 +169,8 @@ function IngredientFormItem<C extends IngredientsCategory>({
         ingredientModel,
       }),
     );
+
+    setCurrentIngredient(recipeStore.getState().ingredients[category]?.[index]);
 
     if (ingredientKey === "name") {
       const current = data.find(

@@ -26,7 +26,6 @@ type Ingredient = {
 type RecipeIngredientModel = {
   ingredientID: number;
   quantity: number;
-  // _id: string;
 };
 
 /**

@@ -38,7 +38,6 @@ type IngredientPayLoad<K extends keyof RecipeIngredient> = {
   ingredientIndex: number;
   ingredientKey: K;
   value: RecipeIngredient[K];
-  // ingredientModel: RecipeIngredient;
   ingredientModel: Ingredient;
 };
 

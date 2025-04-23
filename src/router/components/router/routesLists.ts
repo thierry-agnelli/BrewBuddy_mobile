@@ -12,6 +12,7 @@ import {
   Profile,
   Recipe,
   RecipeCreation,
+  RecipeRealisation,
   Recipes,
   Register,
   TermsOfSale,
@@ -59,6 +60,15 @@ const routesList = [
     {},
     true,
     UserRoles.ADMIN,
+  ),
+  createRouteItem(
+    Routes.RECIPE_REALISATION,
+    RecipeRealisation,
+    {
+      recipe: undefined,
+    },
+    true,
+    UserRoles.USER,
   ),
   createRouteItem(Routes.RECIPES, Recipes, {}, true),
   createRouteItem(

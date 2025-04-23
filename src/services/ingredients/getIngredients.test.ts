@@ -1,16 +1,10 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
 import { getIngredients } from "@services";
-import { IngredientsCategory, ServerError } from "@models";
-import { serverErrorHandler } from "@utils";
+import { IngredientsCategory } from "@models";
+import { env } from "@configs";
 
-type MockedIngredientResponse = {
-  id: number;
-  name: string;
-  measureUnit: string;
-  dosage: number | null;
-  category: IngredientsCategory;
-};
+import * as getModule from "../utils/getService.ts";
 
 /**
  *  Get ingredients list service test.
@@ -62,57 +56,22 @@ describe("Get ingredients list service test", () => {
       },
     ];
 
-    it("Should get ingredients", async () => {
-      // Mocks
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: true,
-        json: jest
-          .fn<() => Promise<MockedIngredientResponse[]>>()
-          .mockResolvedValueOnce(mockedIngredientsList),
-      } as Partial<Response> as Response);
-
-      const ingredientsResponse = await getIngredients();
-
-      // Expected
-      const expectedIngredientsList = {
-        [IngredientsCategory.MALTS]: mockedIngredientsList.filter(
-          (ingredient) => ingredient.category === IngredientsCategory.MALTS,
-        ),
-        [IngredientsCategory.HOPS]: mockedIngredientsList.filter(
-          (ingredient) => ingredient.category === IngredientsCategory.HOPS,
-        ),
-        [IngredientsCategory.YEASTS]: mockedIngredientsList.filter(
-          (ingredient) => ingredient.category === IngredientsCategory.YEASTS,
-        ),
-        [IngredientsCategory.MISCELLANEOUS]: mockedIngredientsList.filter(
-          (ingredient) =>
-            ingredient.category === IngredientsCategory.MISCELLANEOUS,
-        ),
-        [IngredientsCategory.SUGARS]: mockedIngredientsList.filter(
-          (ingredient) => ingredient.category === IngredientsCategory.SUGARS,
-        ),
+    it("Should call get service", async () => {
+      const getSpy = jest
+        .spyOn(getModule, "getService")
+        .mockResolvedValue(mockedIngredientsList);
+      const response = await getIngredients();
+      const mockUrl = `${env.API_URL}/api/ingredients/all`;
+      const expectedResponse = {
+        [IngredientsCategory.MALTS]: [mockedIngredientsList[0]],
+        [IngredientsCategory.HOPS]: [mockedIngredientsList[1]],
+        [IngredientsCategory.YEASTS]: [mockedIngredientsList[2]],
+        [IngredientsCategory.MISCELLANEOUS]: [mockedIngredientsList[3]],
+        [IngredientsCategory.SUGARS]: [mockedIngredientsList[4]],
       };
 
-      expect(ingredientsResponse).toStrictEqual(expectedIngredientsList);
-    });
-
-    it("Should handle request error", async () => {
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: false,
-        json: jest
-          .fn<() => Promise<Partial<ServerError>>>()
-          .mockResolvedValueOnce({
-            status: 400,
-          }),
-      } as Partial<Response> as Response);
-
-      await expect(getIngredients()).rejects.toBe(
-        serverErrorHandler({
-          status: 400,
-          error: "Test-error",
-          message: "Test-message",
-        }),
-      );
+      expect(getSpy).toBeCalledWith({ url: mockUrl });
+      expect(response).toStrictEqual(expectedResponse);
     });
   });
 });

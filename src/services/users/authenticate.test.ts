@@ -1,8 +1,9 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
+import * as postModule from "../utils/postService.ts";
+
 import { authenticate } from "./authenticate.ts";
-import { ServerError } from "@models";
-import { serverErrorHandler } from "@utils";
+import { env } from "@configs";
 
 /**
  *  Authenticate service test.
@@ -15,43 +16,22 @@ describe("Authenticate service test", () => {
   });
 
   describe("tests", () => {
-    it("Should reject authentication", async () => {
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: false,
-        json: jest.fn<() => Promise<ServerError>>().mockResolvedValueOnce({
-          status: 401,
-          error: "mockedError",
-          message: "Mocked error.",
-        }),
-      } as Partial<Response> as Response);
+    it("Should call post service", async () => {
+      const postSpy = jest
+        .spyOn(postModule, "postService")
+        .mockResolvedValue({ accessToken: "user-token" });
+      const mockedUrl = `${env.API_URL}/api/login`;
+      const mockedCredentials = {
+        email: "test@mocks.com",
+        password: "password",
+      };
+      const response = await authenticate(mockedCredentials);
 
-      await expect(
-        authenticate({
-          email: "test@mocke.com",
-          password: "Aze1234!",
-        }),
-      ).rejects.toBe(
-        serverErrorHandler({
-          status: 401,
-          error: "mockedError",
-          message: "Mocked error.",
-        }),
-      );
-    });
-
-    it("Should allow authentication", async () => {
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: true,
-        json: jest
-          .fn<() => Promise<{ accessToken: string }>>()
-          .mockResolvedValueOnce({ accessToken: "Success" }),
-      } as Partial<Response> as Response);
-
-      const response = await authenticate({
-        email: "test@mocke.com",
-        password: "Aze1234!",
+      expect(postSpy).toHaveBeenCalledWith({
+        url: mockedUrl,
+        body: mockedCredentials,
       });
-      expect(response).toBe("Success");
+      expect(response).toBe("user-token");
     });
   });
 });

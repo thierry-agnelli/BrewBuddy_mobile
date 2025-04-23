@@ -227,6 +227,8 @@ function Summary({ onConfirmation }: ModalProps) {
   /* Methods */
   function formatRecipe(): RecipeModel {
     return {
+      isRecipeDoneWriting: isRecipeEnded.current,
+      isInBlackList: false,
       profil: {
         recipeName: recipe.beerProfile.name,
         description: recipe.beerProfile.description,
@@ -241,6 +243,8 @@ function Summary({ onConfirmation }: ModalProps) {
             ingredientID: ingredient.id,
             name: ingredient.name,
             quantity: ingredient.qty || null,
+            measureUnit: ingredient.measureUnit,
+            sugar: !!ingredient?.resugaring,
           })),
         };
       }),

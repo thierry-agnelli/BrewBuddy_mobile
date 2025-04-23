@@ -24,7 +24,9 @@ type IngredientModel = {
     ingredientID: number;
     name: string;
     quantity: number | null;
+    measureUnit: string;
     dryHoping?: boolean;
+    sugar: boolean;
   }>;
 };
 
@@ -74,6 +76,8 @@ type StepsModel = {
  * Backend Recipe model.
  */
 type RecipeModel = {
+  isRecipeDoneWriting: boolean;
+  isInBlackList: boolean;
   profil: ProfileModel;
   recipeIngredients: Array<IngredientModel>;
   steps: StepsModel;
@@ -84,8 +88,6 @@ type RecipeModel = {
  */
 type RecipeModelResponse = RecipeModel & {
   _id: string;
-  isRecipeDoneWriting: boolean;
-  isInBlackList: boolean;
 };
 
 /* Exports */

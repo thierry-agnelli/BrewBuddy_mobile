@@ -9,6 +9,7 @@ enum Routes {
   REGISTER = "Register",
   HOME = "Accueil",
   RECIPE_CREATION = "Création de recette",
+  RECIPE_REALISATION = "Réalisation de recette",
   RECIPES = "Recettes",
   RECIPE = "Recette",
   TERMS_OF_USE = "cgu",

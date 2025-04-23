@@ -173,14 +173,11 @@ Configure this env var :
 ANDROID_HOME = installation/path/Android/SDK
 ```
 
+You need to have unzip installed
+
 #### Windows only
 
-If you have git installed on your computer, you can find it at this
-location :
-
-```
-/your/git/install/path/usr/bin/unzip.exe
-```
+Unzip is available if you have git installed on your pc.
 
 Set up these env var :
 

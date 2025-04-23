@@ -1,9 +1,9 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
-import { ServerError } from "@models";
-import { serverErrorHandler } from "@utils";
-
 import { deleteUser } from "./deleteUser";
+import * as deleteModule from "../utils/deleteService.ts";
+
+import { env } from "@configs";
 
 /**
  *  Delete user service test.
@@ -16,33 +16,16 @@ describe("Delete user service test", () => {
   });
 
   describe("tests", () => {
-    it("Should reject request", async () => {
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: false,
-        json: jest.fn<() => Promise<ServerError>>().mockResolvedValueOnce({
-          status: 401,
-          error: "mockedError",
-          message: "Mocked error.",
-        }),
-      } as Partial<Response> as Response);
+    it("Should call delete service", () => {
+      const deleteSpy = jest.spyOn(deleteModule, "deleteService");
+      deleteUser(0, "test-token");
+      const mockedUrl = `${env.API_URL}/api/users/0`;
+      const mockedToken = "test-token";
 
-      await expect(deleteUser(0, "test-token")).rejects.toBe(
-        serverErrorHandler({
-          status: 401,
-          error: "mockedError",
-          message: "Mocked error.",
-        }),
-      );
-    });
-
-    it("Should allow authentication", async () => {
-      jest.spyOn(global, "fetch").mockResolvedValueOnce({
-        ok: true,
-        json: jest.fn<() => Promise<string>>().mockResolvedValueOnce("deleted"),
-      } as Partial<Response> as Response);
-
-      const response = await deleteUser(0, "test-token");
-      expect(response).toBe("Deleted");
+      expect(deleteSpy).toBeCalledWith({
+        url: mockedUrl,
+        authToken: mockedToken,
+      });
     });
   });
 });

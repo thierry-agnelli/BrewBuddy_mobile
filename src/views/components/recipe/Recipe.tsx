@@ -27,6 +27,7 @@ function Recipe({ navigation, route }: DrawerScreenViewProps<Routes.RECIPE>) {
   const [internalRecipe, setInternalRecipe] = useState<RecipeModelResponse>();
 
   const { recipe } = route.params;
+
   useEffect(() => {
     if (typeof recipe !== "string") {
       setInternalRecipe(recipe);
@@ -56,6 +57,11 @@ function Recipe({ navigation, route }: DrawerScreenViewProps<Routes.RECIPE>) {
         <Text style={viewContent.title} testID={"recipe-name"}>
           {internalRecipe?.profil.recipeName}
         </Text>
+        <Button
+          title={"Lancer la réalisation"}
+          testID={"realisation-button"}
+          onPress={onRecipeRealisationPress}
+        />
       </View>
       <View style={styles.recipeContent}>
         <ScrollView>
@@ -151,8 +157,21 @@ function Recipe({ navigation, route }: DrawerScreenViewProps<Routes.RECIPE>) {
   );
 
   /* Events */
+
+  /**
+   * Return to recipe list.
+   */
   function onListReturnPress() {
     navigation.navigate(Routes.RECIPES, {});
+  }
+
+  /**
+   * Start recipe realisation
+   */
+  function onRecipeRealisationPress() {
+    navigation.navigate(Routes.RECIPE_REALISATION, {
+      recipe: internalRecipe,
+    });
   }
 
   /* Methods */

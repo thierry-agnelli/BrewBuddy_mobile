@@ -288,18 +288,24 @@ describe("Summary component test", () => {
         ingredientID: 0,
         name: "test-malt",
         quantity: 99,
+        measureUnit: "kg",
+        sugar: false,
       });
       // hop
       mockedRecipeModel.recipeIngredients[1].ingredients.push({
         ingredientID: 1,
         name: "test-hop",
         quantity: 999,
+        measureUnit: "g",
+        sugar: false,
       });
       // yeasts
       mockedRecipeModel.recipeIngredients[2].ingredients.push({
         ingredientID: 2,
         name: "test-yeast",
         quantity: null,
+        measureUnit: "g/l",
+        sugar: false,
       });
       // mashing
       mockedRecipeModel.steps.mashing.steps.push({
@@ -330,7 +336,7 @@ describe("Summary component test", () => {
 
       jest
         .spyOn(validateRecipeModule, "validateRecipe")
-        .mockResolvedValue("Success");
+        .mockResolvedValue(undefined);
 
       const mockedOnConfirmation = jest.fn();
 

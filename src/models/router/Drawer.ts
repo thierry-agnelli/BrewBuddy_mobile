@@ -20,6 +20,9 @@ type RouteParameter = {
   [Routes.RECIPE]: {
     recipe: RecipeModelResponse | string;
   };
+  [Routes.RECIPE_REALISATION]: {
+    recipe: RecipeModelResponse | undefined;
+  };
 };
 
 /**
